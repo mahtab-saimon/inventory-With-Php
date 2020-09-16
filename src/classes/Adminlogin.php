@@ -35,18 +35,20 @@ class Adminlogin
             $result = $this->db->select($query);
             if ($result !=false){
                 $value = $result->fetch_assoc();
-                $userEmail=$value['email'];
-                $userName=$value['name'];
-                $_SESSION['name']=$userName;
-                $_SESSION['email']=$userEmail;
-                /*if (isset($_SESSION['role']) && $_SESSION['role'] =='2'){
+                Session::set("login",true);
 
-                    header("location:dashboard.php");
-                }
-                elseif (isset($_SESSION['role']) && $_SESSION['role'] =='1'){
+              Session::set("email",$value['email']);
+                Session::set("name",$value['name']);
+                Session::set("image",$value['image']);
 
-                    header("location:studentList.php");
-                }*/
+                    /*if (isset($_SESSION['role']) && $_SESSION['role'] =='2'){
+
+                        header("location:dashboard.php");
+                    }
+                    elseif (isset($_SESSION['role']) && $_SESSION['role'] =='1'){
+
+                        header("location:studentList.php");
+                    }*/
 
                 header("location:index.php");
             }else{
@@ -55,4 +57,8 @@ class Adminlogin
             }
         }
     }
+
+
+
+
 }

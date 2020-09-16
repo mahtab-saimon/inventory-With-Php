@@ -1,19 +1,21 @@
 <?php
-include_once "../classes/Customer.php";
-$cmr = new Customer();
+include_once "../classes/AdvanceSalary.php";
+$adsalry = new AdvanceSalary();
 ?>
 <?php
-if (isset($_REQUEST['cmrId'])){
-    $id = $_REQUEST['cmrId'];
-    $delCustomer = $cmr->delCustomerById($id);
+if (isset($_REQUEST['adSalaryId'])){
+    $id = $_REQUEST['adSalaryId'];
+    $deladSalary = $adsalry->delAdvanceSalaryById($id);
 }
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Inventory  | All Customer</title>
+    <title>Inventory  | All Category</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -28,15 +30,12 @@ if (isset($_REQUEST['cmrId'])){
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
     <!-- Navbar -->
-    <!-- Navbar -->
     <?php
-    $filepath = realpath(dirname(__FILE__));
-    include_once $filepath."/../inc/header.php";
+    include_once "../inc/header.php";
     ?>
     <!-- /.navbar -->
     <?php
-    $filepath = realpath(dirname(__FILE__));
-    include_once $filepath."/../inc/sidebar.php";
+    include_once "../inc/sidebar.php";
     ?>
     <!-- Main Sidebar Container -->
     <!-- Content Wrapper. Contains page content -->
@@ -46,12 +45,12 @@ if (isset($_REQUEST['cmrId'])){
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>DataTables</h1>
+                        <h1>Category</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">All Employee</li>
+                            <li class="breadcrumb-item active">All Category</li>
                         </ol>
                     </div>
                 </div>
@@ -65,7 +64,7 @@ if (isset($_REQUEST['cmrId'])){
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">All Employee</h3>
+                                <h3 class="card-title">All Category</h3>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
@@ -74,43 +73,30 @@ if (isset($_REQUEST['cmrId'])){
                                     <tr>
                                         <th>SL</th>
                                         <th>Name</th>
-                                        <th>Phone</th>
-                                        <th>Address</th>
-                                        <th>shopName</th>
-                                        <th>accountHolder</th>
-                                        <th>accountNumber</th>
-                                        <th>bankName</th>
-                                        <th>bankBranch</th>
-                                        <th>city</th>
-                                        <th>image</th>
+                                        <th>month</th>
+                                        <th>advance_salary</th>
                                         <th>Actions</th>
                                     </tr>
                                     </thead>
                                     <?php
-                                    $getCustomer = $cmr->getAllCustomer();
-                                    if ($getCustomer){
+                                    $getAdsalary = $adsalry->getAllAdvanceSalary();
+                                    if ($getAdsalary){
                                         $i=0;
-                                        while ($result = $getCustomer->fetch_assoc()) {
+                                        while ($result = $getAdsalary->fetch_assoc()) {
                                             $i++;
 
                                             ?>
                                             <tr class="">
                                                 <td><?= $i?></td>
-                                                <td><?= $result['firstname']; ?> <?= $result['lastname'];?></td>
-                                                <td><?= $result['phone']; ?></td>
-                                                <td><?= $result['address']; ?></td>
-                                                <td><?= $result['shopName']; ?></td>
-                                                <td><?= $result['accountHolder']; ?></td>
-                                                <td><?= $result['accountNumber']; ?></td>
-                                                <td><?= $result['bankName']; ?></td>
-                                                <td><?= $result['bankBranch']; ?></td>
-                                                <td><?= $result['city']; ?></td>
-                                                <td>
-                                                    <img src="<?= $result['image']; ?>" height="60px" width="60px"alt="">
-                                                </td>
+                                                <td><?= $result['firstname']; ?> <?= $result['lastname']; ?></td>
+                                                <td><?= $result['month']; ?></td>
+                                                <td><?= $result['advance_salary']; ?></td>
+
                                                 <td>
                                                     <a href="#" class="btn btn-success btn-sm"> <i class="fa fa-eye"></i></a>
-                                                    <a href="editCustomer.php?cmrId=<?= $result['id']; ?>" class="btn btn-info btn-sm"> <i class="fa fa-edit"></i></a>
+                                                    <a href="editAdvanceSalary.php?adSalaryId=<?= $result['id']; ?>" class="btn btn-info btn-sm">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
                                                     <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#myBtn<?= $result['id']; ?> ">
                                                         <i class="fa fa-trash"></i>
                                                     </button>
@@ -128,7 +114,7 @@ if (isset($_REQUEST['cmrId'])){
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                            <a href="?cmrId=<?= $result['id']?>" class="btn btn-outline-dark">Delete</a>
+                                                            <a href="?adSalaryId=<?= $result['id']?>" class="btn btn-outline-dark">Delete</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -141,16 +127,7 @@ if (isset($_REQUEST['cmrId'])){
                                     <tfoot>
                                     <tr>
                                         <th>SL</th>
-                                        <th>Name</th>
-                                        <th>Phone</th>
-                                        <th>Address</th>
-                                        <th>shopName</th>
-                                        <th>accountHolder</th>
-                                        <th>accountNumber</th>
-                                        <th>bankName</th>
-                                        <th>bankBranch</th>
-                                        <th>city</th>
-                                        <th>image</th>
+                                        <th>Category Name</th>
                                         <th>Actions</th>
                                     </tr>
                                     </tfoot>

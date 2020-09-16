@@ -93,7 +93,7 @@ class Employee
     }
     public function geEmployeeById($id)
     {
-        $query = "select * from supliers where id = '$id'";
+        $query = "select * from employees where id = '$id'";
         $result = $this->db->select($query);
         return $result;
     }

@@ -1,9 +1,25 @@
+<?php
+include_once "classes/Employee.php";
+$emp = new Employee();
+?>
+
+<?php
+include_once "classes/Cart.php";
+$ct = new Cart();
+include_once "classes/Expence.php";
+$expence = new Expence();
+
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Dashboard</title>
+    <title>Inventory | Dashboard</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -51,7 +67,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Dashboard v1</li>
+                            <li class="breadcrumb-item active">Dashboard</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -68,14 +84,16 @@
                         <!-- small box -->
                         <div class="small-box bg-info">
                             <div class="inner">
-                                <h3>150</h3>
+                                <h3>
+
+                                </h3>
 
                                 <p>New Orders</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-bag"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="order/pendingOrder.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -83,14 +101,14 @@
                         <!-- small box -->
                         <div class="small-box bg-success">
                             <div class="inner">
-                                <h3>53<sup style="font-size: 20px">%</sup></h3>
+                                <h3><sup style="font-size: 20px"></sup></h3>
 
-                                <p>Bounce Rate</p>
+                                <p>Point Of Sale</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-stats-bars"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="pos.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -98,14 +116,16 @@
                         <!-- small box -->
                         <div class="small-box bg-warning">
                             <div class="inner">
-                                <h3>44</h3>
+                                <h3>
 
-                                <p>User Registrations</p>
+                                </h3>
+
+                                <p>Cutomer</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-person-add"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="customer/allCustomer.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -113,14 +133,16 @@
                         <!-- small box -->
                         <div class="small-box bg-danger">
                             <div class="inner">
-                                <h3>65</h3>
+                                <h3>
 
-                                <p>Unique Visitors</p>
+                                </h3>
+
+                                <p>Product in Stock</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-pie-graph"></i>
+                                <i class="ion ion-bag"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="product/allProduct.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -133,17 +155,16 @@
                         <!-- Custom tabs (Charts with tabs)-->
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">
+                                <h1 class="card-title">
                                     <i class="fas fa-chart-pie mr-1"></i>
-                                    Sales
-                                </h3>
+                                    Pending Order
+
+                                </h1>
+
                                 <div class="card-tools">
                                     <ul class="nav nav-pills ml-auto">
                                         <li class="nav-item">
-                                            <a class="nav-link active" href="#revenue-chart" data-toggle="tab">Area</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#sales-chart" data-toggle="tab">Donut</a>
+                                            <p class="lead">please confirm those product</p>
                                         </li>
                                     </ul>
                                 </div>
@@ -151,13 +172,59 @@
                             <div class="card-body">
                                 <div class="tab-content p-0">
                                     <!-- Morris chart - Sales -->
-                                    <div class="chart tab-pane active" id="revenue-chart"
-                                         style="position: relative; height: 300px;">
-                                        <canvas id="revenue-chart-canvas" height="300" style="height: 300px;"></canvas>
-                                    </div>
-                                    <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;">
-                                        <canvas id="sales-chart-canvas" height="300" style="height: 300px;"></canvas>
-                                    </div>
+
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Date</th>
+                                            <th>Quantity</th>
+                                            <th>Total Amount</th>
+                                            <th>Payment</th>
+                                            <th>Order Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php
+                                        $getPd = $ct->getOrderProduct();
+                                        if ($getPd){
+                                            while ($result=$getPd->fetch_assoc()) {
+                                                ?>
+                                                <tr>
+                                                    <td><?=$result['firstname']?> <?=$result['lastname']?></td>
+                                                    <td><?=$result['orderDate']?></td>
+                                                    <td><?=$result['totalProducts']?></td>
+                                                    <td><?=$result['total']?></td>
+                                                    <td><?=$result['paymentStatus']?></td>
+                                                    <td>
+                                                        <span class="badge badge-danger"> <?=$result['orderStatus']?></span>
+                                                    </td>
+                                                    <td>
+                                                        <a class="btn btn-info" href="viewOrder.php?orderDetailsId=<?= $result['o_Id']; ?>"><i class="fa fa-eye"></i></a>
+                                                    </td>
+                                                </tr>
+                                                <?php
+                                            }
+                                        }
+                                        ?>
+                                        </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Date</th>
+                                            <th>Quantity</th>
+                                            <th>Total Amount</th>
+                                            <th>Payment</th>
+                                            <th>Order Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+
+
+
+
                                 </div>
                             </div><!-- /.card-body -->
                         </div>
@@ -370,7 +437,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">
                                     <i class="ion ion-clipboard mr-1"></i>
-                                    To Do List
+                                   Our Employee
                                 </h3>
 
                                 <div class="card-tools">
@@ -386,107 +453,43 @@
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <ul class="todo-list" data-widget="todo-list">
-                                    <li>
-                                        <!-- drag handle -->
-                                        <span class="handle">
-                      <i class="fas fa-ellipsis-v"></i>
-                      <i class="fas fa-ellipsis-v"></i>
-                    </span>
-                                        <!-- checkbox -->
-                                        <div  class="icheck-primary d-inline ml-2">
-                                            <input type="checkbox" value="" name="todo1" id="todoCheck1">
-                                            <label for="todoCheck1"></label>
-                                        </div>
-                                        <!-- todo text -->
-                                        <span class="text">Design a nice theme</span>
-                                        <!-- Emphasis label -->
-                                        <small class="badge badge-danger"><i class="far fa-clock"></i> 2 mins</small>
-                                        <!-- General tools such as edit or delete-->
-                                        <div class="tools">
-                                            <i class="fas fa-edit"></i>
-                                            <i class="fas fa-trash-o"></i>
-                                        </div>
-                                    </li>
-                                    <li>
-                    <span class="handle">
-                      <i class="fas fa-ellipsis-v"></i>
-                      <i class="fas fa-ellipsis-v"></i>
-                    </span>
-                                        <div  class="icheck-primary d-inline ml-2">
-                                            <input type="checkbox" value="" name="todo2" id="todoCheck2" checked>
-                                            <label for="todoCheck2"></label>
-                                        </div>
-                                        <span class="text">Make the theme responsive</span>
-                                        <small class="badge badge-info"><i class="far fa-clock"></i> 4 hours</small>
-                                        <div class="tools">
-                                            <i class="fas fa-edit"></i>
-                                            <i class="fas fa-trash-o"></i>
-                                        </div>
-                                    </li>
-                                    <li>
-                    <span class="handle">
-                      <i class="fas fa-ellipsis-v"></i>
-                      <i class="fas fa-ellipsis-v"></i>
-                    </span>
-                                        <div  class="icheck-primary d-inline ml-2">
-                                            <input type="checkbox" value="" name="todo3" id="todoCheck3">
-                                            <label for="todoCheck3"></label>
-                                        </div>
-                                        <span class="text">Let theme shine like a star</span>
-                                        <small class="badge badge-warning"><i class="far fa-clock"></i> 1 day</small>
-                                        <div class="tools">
-                                            <i class="fas fa-edit"></i>
-                                            <i class="fas fa-trash-o"></i>
-                                        </div>
-                                    </li>
-                                    <li>
-                    <span class="handle">
-                      <i class="fas fa-ellipsis-v"></i>
-                      <i class="fas fa-ellipsis-v"></i>
-                    </span>
-                                        <div  class="icheck-primary d-inline ml-2">
-                                            <input type="checkbox" value="" name="todo4" id="todoCheck4">
-                                            <label for="todoCheck4"></label>
-                                        </div>
-                                        <span class="text">Let theme shine like a star</span>
-                                        <small class="badge badge-success"><i class="far fa-clock"></i> 3 days</small>
-                                        <div class="tools">
-                                            <i class="fas fa-edit"></i>
-                                            <i class="fas fa-trash-o"></i>
-                                        </div>
-                                    </li>
-                                    <li>
-                    <span class="handle">
-                      <i class="fas fa-ellipsis-v"></i>
-                      <i class="fas fa-ellipsis-v"></i>
-                    </span>
-                                        <div  class="icheck-primary d-inline ml-2">
-                                            <input type="checkbox" value="" name="todo5" id="todoCheck5">
-                                            <label for="todoCheck5"></label>
-                                        </div>
-                                        <span class="text">Check your messages and notifications</span>
-                                        <small class="badge badge-primary"><i class="far fa-clock"></i> 1 week</small>
-                                        <div class="tools">
-                                            <i class="fas fa-edit"></i>
-                                            <i class="fas fa-trash-o"></i>
-                                        </div>
-                                    </li>
-                                    <li>
-                    <span class="handle">
-                      <i class="fas fa-ellipsis-v"></i>
-                      <i class="fas fa-ellipsis-v"></i>
-                    </span>
-                                        <div  class="icheck-primary d-inline ml-2">
-                                            <input type="checkbox" value="" name="todo6" id="todoCheck6">
-                                            <label for="todoCheck6"></label>
-                                        </div>
-                                        <span class="text">Let theme shine like a star</span>
-                                        <small class="badge badge-secondary"><i class="far fa-clock"></i> 1 month</small>
-                                        <div class="tools">
-                                            <i class="fas fa-edit"></i>
-                                            <i class="fas fa-trash-o"></i>
-                                        </div>
-                                    </li>
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>SL</th>
+                                            <th>Name</th>
+                                            <th>image</th>
+                                        </tr>
+                                        </thead>
+                                        <?php
+                                        $getEmployee = $emp->getAllEmployee();
+                                        if ($getEmployee){
+                                            $i=0;
+                                            while ($result = $getEmployee->fetch_assoc()) {
+                                                $i++;
+
+                                                ?>
+                                                <tr class="">
+                                                    <td><?= $i?></td>
+                                                    <td><?= $result['firstname']; ?> <?= $result['lastname'];?></td>
+                                                    <td>
+                                                        <img src="img/<?= $result['image']; ?>" height="60px" width="60px"alt="">
+                                                    </td>
+
+                                                </tr>
+                                                <?php
+                                            }
+                                        }
+                                        ?>
+                                        </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <th>SL</th>
+                                            <th>Name</th>
+                                            <th>image</th>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
                                 </ul>
                             </div>
                             <!-- /.card-body -->
@@ -546,49 +549,88 @@
                         <!-- /.card -->
 
                         <!-- solid sales graph -->
-                        <div class="card bg-gradient-info">
+                        <div class="card">
                             <div class="card-header border-0">
                                 <h3 class="card-title">
-                                    <i class="fas fa-th mr-1"></i>
-                                    Sales Graph
+                                    <i class="fas fa-money-bill mr-1"></i>
+                                   Expense
+                                    <p class="lead text-right"> Monthly Expense</p>
                                 </h3>
 
                                 <div class="card-tools">
-                                    <button type="button" class="btn bg-info btn-sm" data-card-widget="collapse">
+                                    <button type="button" class="btn  btn-sm" data-card-widget="collapse">
                                         <i class="fas fa-minus"></i>
                                     </button>
-                                    <button type="button" class="btn bg-info btn-sm" data-card-widget="remove">
+                                    <button type="button" class="btn btn-sm" data-card-widget="remove">
                                         <i class="fas fa-times"></i>
                                     </button>
                                 </div>
                             </div>
                             <div class="card-body">
-                                <canvas class="chart" id="line-chart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+<!--                                <canvas class="chart" id="line-chart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>-->
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>SL</th>
+                                        <th>Details</th>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                    </thead>
+                                    <?php
+                                    $getexpence = $expence->getMonthlyExpence();
+                                    if ($getexpence){
+                                        $i=0;
+                                        while ($result = $getexpence->fetch_assoc()) {
+                                            $i++;
+
+                                            ?>
+                                            <tr class="">
+                                                <td><?= $i?></td>
+                                                <td><?= $result['details']; ?></td>
+                                                <td><?= $result['date']; ?></td>
+                                                <td><?= $result['amount']; ?></td>
+                                            </tr>
+
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                    <tr>
+                                    <tr></tr>
+                                    <td></td>
+                                    <?php
+                                    $getTotalexpence = $expence->getTodayTOtalExpence();
+                                    if ($getTotalexpence) {
+                                        while ($result = $getTotalexpence->fetch_assoc()) {
+                                            ?>
+                                            <td>
+                                                <h1 class="text-center">Total Expanse: <?=$result['sum']?> </h1>
+                                            </td>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                    <td></td>
+                                    <td></td>
+                                    </tr>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <th>SL</th>
+                                        <th>Details</th>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                    </tfoot>
+                                </table>
                             </div>
                             <!-- /.card-body -->
                             <div class="card-footer bg-transparent">
                                 <div class="row">
-                                    <div class="col-4 text-center">
-                                        <input type="text" class="knob" data-readonly="true" value="20" data-width="60" data-height="60"
-                                               data-fgColor="#39CCCC">
-
-                                        <div class="text-white">Mail-Orders</div>
-                                    </div>
-                                    <!-- ./col -->
-                                    <div class="col-4 text-center">
-                                        <input type="text" class="knob" data-readonly="true" value="50" data-width="60" data-height="60"
-                                               data-fgColor="#39CCCC">
-
-                                        <div class="text-white">Online</div>
-                                    </div>
-                                    <!-- ./col -->
-                                    <div class="col-4 text-center">
-                                        <input type="text" class="knob" data-readonly="true" value="30" data-width="60" data-height="60"
-                                               data-fgColor="#39CCCC">
-
-                                        <div class="text-white">In-Store</div>
-                                    </div>
-                                    <!-- ./col -->
+                                    <h1>
+                                        Monthly Expense
+                                    </h1>
                                 </div>
                                 <!-- /.row -->
                             </div>

@@ -1,3 +1,14 @@
+
+
+
+<?php
+$filepath = realpath(dirname(__FILE__));
+include_once $filepath."/../lib/Session.php";
+Session::checkSession();
+include_once $filepath."/../lib/Database.php";
+include_once $filepath."/../helpers/Format.php";
+?>
+
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
@@ -120,6 +131,14 @@
             <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
                 <i class="fas fa-th-large"></i>
             </a>
+        </li>
+        <?php
+        if (isset($_GET['action']) && $_GET['action'] == "logout"){
+            Session::destroy();
+        }
+        ?>
+        <li class="nav-item">
+            <a class="nav-link btn-sm btn-outline-dark" href="?action=logout">LOGOUT</a>
         </li>
     </ul>
 </nav>

@@ -35,12 +35,15 @@ if (isset($_POST['submit'])){
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
     <!-- Navbar -->
+    <!-- Navbar -->
     <?php
-    include_once "../inc/header.php";
+    $filepath = realpath(dirname(__FILE__));
+    include_once $filepath."/../inc/header.php";
     ?>
     <!-- /.navbar -->
     <?php
-    include_once "../inc/sidebar.php";
+    $filepath = realpath(dirname(__FILE__));
+    include_once $filepath."/../inc/sidebar.php";
     ?>
     <!-- Main Sidebar Container -->
 

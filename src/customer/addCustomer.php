@@ -1,6 +1,6 @@
 <?php
-include_once "../classes/Customer.php";
-
+$filepath = realpath(dirname(__FILE__));
+include_once $filepath."/../classes/Customer.php";
 $cmr = new Customer();
 if (isset($_POST['submit'])){
     $customerInsert = $cmr->customerInsert($_POST,$_FILES);
@@ -27,11 +27,13 @@ if (isset($_POST['submit'])){
 <div class="wrapper">
     <!-- Navbar -->
 <?php
-include_once "../inc/header.php";
+$filepath = realpath(dirname(__FILE__));
+include_once $filepath."/../inc/header.php";
 ?>
 <!-- /.navbar -->
 <?php
-include_once "../inc/sidebar.php";
+$filepath = realpath(dirname(__FILE__));
+include_once $filepath."/../inc/sidebar.php";
 ?>
 <!-- Main Sidebar Container -->
 
@@ -45,7 +47,7 @@ include_once "../inc/sidebar.php";
                         <h1>Customer Form</h1>
                         <h2>
                             <?php
-                            if ($customerInsert){
+                            if (isset($customerInsert)){
                                 echo $customerInsert;
                             }
                             ?>

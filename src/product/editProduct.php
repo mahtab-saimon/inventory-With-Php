@@ -204,8 +204,7 @@ if (isset($_POST['submit'])){
                                                                name="productDescription" type="text">
                                                     </div>
                                                     <div class="form-group">
-                                                        <img src="<?= $value['productImage']; ?>" height="60px" width="60px"
-                                                             alt="">
+                                                        <img src="<?= $value['productImage']; ?>" height="60px" width="60px" alt="">
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="exampleInputFile">image</label>
