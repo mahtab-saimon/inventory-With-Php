@@ -27,6 +27,15 @@ class Product
         $catId = $this->fm->validation($data['catId']);
         $catId = mysqli_real_escape_string($this->db->link, $data['catId']);
 
+        $brand_Id = $this->fm->validation($data['brand_Id']);
+        $brand_Id = mysqli_real_escape_string($this->db->link, $data['brand_Id']);
+
+        $size_Id = $this->fm->validation($data['size_Id']);
+        $size_Id = mysqli_real_escape_string($this->db->link, $data['size_Id']);
+
+        $color_Id = $this->fm->validation($data['color_Id']);
+        $color_Id = mysqli_real_escape_string($this->db->link, $data['color_Id']);
+
         $suplierId = $this->fm->validation($data['suplierId']);
         $suplierId = mysqli_real_escape_string($this->db->link, $data['suplierId']);
 
@@ -68,8 +77,8 @@ class Product
             return $msg;
         } else {
             move_uploaded_file($file_temp, $uploaded_image);
-            $query = "INSERT INTO products(productName, catId, suplierId, productCode, productPlce,productRoute,productDescription ,productImage, buyDate,expireDate ,buyingPrice , sellingPrice ) 
-    VALUES('$productName', '$catId', '$suplierId', '$productCode', '$productPlce', '$productRoute','$productDescription','$uploaded_image','$buyDate','$expireDate','$buyingPrice','$sellingPrice' )";
+            $query = "INSERT INTO products(productName, catId, brand_Id,  size_Id, color_Id, suplierId, productCode, productPlce,productRoute,productDescription ,productImage, buyDate,expireDate ,buyingPrice , sellingPrice ) 
+    VALUES('$productName', '$catId', '$brand_Id', '$size_Id', '$color_Id', '$suplierId', '$productCode', '$productPlce', '$productRoute','$productDescription','$uploaded_image','$buyDate','$expireDate','$buyingPrice','$sellingPrice' )";
 
             $inserted_rows = $this->db->insert($query);
             if ($inserted_rows) {
@@ -86,9 +95,7 @@ class Product
                   products.catId=categories.id 
                               and 
                   products.suplierId=supliers.id
-                            order by 
-                   products.id
-                              desc 
+                            order by productId desc 
               ";
         $result = $this->db->select($query);
         return $result;
@@ -110,6 +117,15 @@ class Product
 
         $catId = $this->fm->validation($data['catId']);
         $catId = mysqli_real_escape_string($this->db->link, $data['catId']);
+
+        $brand_Id = $this->fm->validation($data['brand_Id']);
+        $brand_Id = mysqli_real_escape_string($this->db->link, $data['brand_Id']);
+
+        $size_Id = $this->fm->validation($data['size_Id']);
+        $size_Id = mysqli_real_escape_string($this->db->link, $data['size_Id']);
+
+        $color_Id = $this->fm->validation($data['color_Id']);
+        $color_Id = mysqli_real_escape_string($this->db->link, $data['color_Id']);
 
         $suplierId = $this->fm->validation($data['suplierId']);
         $suplierId = mysqli_real_escape_string($this->db->link, $data['suplierId']);
@@ -161,6 +177,9 @@ class Product
                                  set
                         productName='$productName',
                         catId='$catId',
+                        brand_Id=$brand_Id,
+                        size_Id=$size_Id,
+                        color_Id=$color_Id,
                         suplierId='$suplierId',
                         productCode='$productCode',
                         productPlce='$productPlce',

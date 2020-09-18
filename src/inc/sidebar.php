@@ -146,6 +146,78 @@
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-list"></i>
+                        <p>
+                            Brand
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="brand/addBrand.php" class="nav-link">
+                                <i class="far fa-list nav-icon"></i>
+                                <p>Add Brand</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="brand/allBrand.php" class="nav-link">
+                                <i class="far fa-list nav-icon"></i>
+                                <p>All Brand</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-list"></i>
+                        <p>
+                            Size
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="size/addSize.php" class="nav-link">
+                                <i class="far fa-list nav-icon"></i>
+                                <p>Add Size</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="size/allSize.php" class="nav-link">
+                                <i class="far fa-list nav-icon"></i>
+                                <p>All Size</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-list"></i>
+                        <p>
+                            Color
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="color/addColor.php" class="nav-link">
+                                <i class="far fa-list nav-icon"></i>
+                                <p>Add Color</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="color/allColor.php" class="nav-link">
+                                <i class="far fa-list nav-icon"></i>
+                                <p>All Color</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
                         <i class="nav-icon fab fa-product-hunt"></i>
                         <p>
                             Product

@@ -12,7 +12,7 @@ if (isset($_GET['delpro'])){
     $delProduct=$ct->delCartById($id);
 }
 if (isset($_POST['submit'])){
-    $getInsertIntoCart = $ct->addTocart($_POST,$_FILES);
+    $getInsertIntoCart = $ct->addTocart($_POST);
 }
 
 if (isset($_POST['quantityBtn'])){
@@ -59,12 +59,12 @@ if (isset($_POST['quantityBtn'])){
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>General Form</h1>
+                        <h1>Point Of sales</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">General Form</li>
+                            <li class="breadcrumb-item active">Point Of sales</li>
                         </ol>
                     </div>
                 </div>
@@ -79,8 +79,6 @@ if (isset($_POST['quantityBtn'])){
                     <div class="col-md-12">
                         <div class="card card-dark">
                             <div class="card-header">
-                                <h2 class="text-center"><span class="break"></span><?=date("d/m/Y")?></h2>
-                                <h2 class="card-title text-center">Product</h2>
                                 <h2 class="card-title text-center">
                                     <?php
                                     if (isset($getInsertIntoCart)){
@@ -89,7 +87,41 @@ if (isset($_POST['quantityBtn'])){
                                     ?>
                                 </h2>
                             </div>
-                            <form method="post" enctype="multipart/form-data">
+                            <form method="post">
+                                <div class="card">
+                                    <div class="card-title bg-dark">
+                                        <h1>Customer</h1>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table">
+                                            <div class="form-group col-md-12">
+                                                <label for="customer">Customer Name</label>
+                                                <select id="customer" name="customer_Id" class="form-control">
+                                                    <option>Select A Customer</option>
+                                                    <?php
+                                                    $getCustomer = $cmr->getAllCustomer();
+                                                    if ($getCustomer) {
+                                                        while ($results = $getCustomer->fetch_assoc())
+                                                        {
+                                                            ?>
+                                                            <option value="<?= $results['id']; ?>">
+                                                                <?= $results['firstname']; ?>
+                                                            </option>
+                                                            <?php
+                                                        }
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="card card-dark">
+                                    <div class="card-header">
+                                        <h2 class="text-center"><span class="break"></span><?=date("d/m/Y")?></h2>
+                                        <h2 class="card-title text-center">Product</h2>
+                                    </div>
+                                </div>
                                 <div class="card-body">
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
@@ -109,30 +141,21 @@ if (isset($_POST['quantityBtn'])){
                                                 ?>
                                                 <tr class="">
                                                     <td>
-                                                        <button type="submit" name="submit" class="btn btn-outline-dark"><i class="fa fa-plus-circle"></i></button>
+                                                        <button type="submit" name="submit" class="btn btn-outline-dark">
+                                                            <i class="fa fa-plus-circle"></i>
+                                                        </button>
                                                     </td>
                                                     <td><?= $result['productName']; ?></td>
-
                                                     <input type="hidden" value="<?=$result['productId']; ?>" name="product_Id">
-                                                    <input type="hidden" value="<?= $result['sellingPrice'];?>" name="price">
                                                     <input type="hidden" value="1" name="quantity">
+                                                    <input type="hidden" value="<?= $result['sellingPrice'];?>" name="price">
 
-                                                    <?php
-                                                    $getCustomer = $cmr->getAllCustomer();
-                                                    if ($getCustomer) {
-                                                        $results = $getCustomer->fetch_assoc()
-                                                        ?>
-                                                        <input type="hidden" value="<?= $results['id']; ?>"
-                                                               name="customer_Id">
-                                                        <?php
-                                                    }
-                                                        ?>
                                                     <td><?= $result['productCode']; ?></td>
                                                     <td><?= $result['sellingPrice']; ?></td>
                                                     <td><?= $result['categoryName']; ?></td>
                                                     <td>
                                                         <img src="img/<?= $result['productImage']; ?>" height="60px" width="60px"alt="">
-                                                    </td>
+                                                    </td
                                                 </tr>
                                                 <?php
                                             }
@@ -150,7 +173,6 @@ if (isset($_POST['quantityBtn'])){
                                         </tr>
                                         </tfoot>
                                     </table>
-
                                 </div>
                             </form>
                         </div>
@@ -196,7 +218,7 @@ if (isset($_POST['quantityBtn'])){
                                                     <td><?=$i?></td>
                                                     <td><?=$result['productName']?></td>
                                                     <td>
-                                                        <img src="img/<?= $result['image']; ?>" height="60px" width="60px"alt="">
+                                                        <img src="<?= $result['cart_Image']; ?>" height="60px" width="60px"alt="">
                                                     </td>
 
                                                     <td>TK<?=$result['price']?></td>
@@ -214,9 +236,11 @@ if (isset($_POST['quantityBtn'])){
                                                         ?>
                                                     </td>
                                                     <td>
-                                                        <a onclick="return confirm( 'Are You Sure To Delete.?')" href="?delpro=<?=$result['cartId'];?>">X</a>
+                                                        <a onclick="return confirm( 'Are You Sure To Delete.?')" href="?delpro=<?=$result['cartId'];?>" class="btn btn-outline-dark">X</a>
                                                     </td>
                                                 </tr>
+                                                <a href="invoice.php?cus_Id=<?=$result['cus_Id']?>" class="btn btn-outline-dark"><?=$result['firstname']?></a>
+
                                                 <?php
                                             }
                                         }
@@ -240,7 +264,6 @@ if (isset($_POST['quantityBtn'])){
                     </div>
                 </div>
             </div>
-            <a href="invoice.php" class="btn btn-outline-dark">Invoice</a>
         </section>
     </div>
     <?php

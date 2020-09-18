@@ -1,5 +1,8 @@
 <?php
 include_once "../classes/Product.php";
+include_once "../classes/Brand.php";
+include_once "../classes/Size.php";
+include_once "../classes/Color.php";
 include_once "../classes/Category.php";
 include_once "../classes/Suplier.php";
 
@@ -98,7 +101,7 @@ if (isset($_POST['submit'])){
                                                                type="text">
                                                     </div>
                                                     <div class="row">
-                                                        <div class="form-group col-md-6">
+                                                        <div class="form-group col-md-4">
                                                             <label for="categoryName">category Name</label>
                                                             <select id="categoryName" name="catId" class="form-control">
                                                                 <option>Select Category</option>
@@ -125,7 +128,31 @@ if (isset($_POST['submit'])){
 
                                                             </select>
                                                         </div>
-                                                        <div class="form-group col-md-6">
+                                                        <div class="form-group col-md-4">
+                                                            <label for="categoryName">Brand Name</label>
+                                                            <select id="categoryName" name="brand_Id" class="form-control">
+                                                                <option>Select Brand</option>
+
+                                                                <?php
+                                                                $br = new Brand();
+                                                                $getbr = $br->getAllBrand();
+                                                                if ($getbr){
+                                                                    while ($result=$getbr->fetch_assoc()){
+                                                                        ?>
+                                                                        <option
+                                                                            <?php
+                                                                            if ($value['suplierId'] == $result['id']) {
+                                                                                ?>
+
+                                                                                selected="selected"
+                                                                            <?php }
+                                                                            ?>
+                                                                        value="<?=$result['id']?>"><?=$result['brandName']?></option>
+                                                                    <?php } } ?>
+
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group col-md-4">
                                                             <label for="SuplierName">Suplier Name</label>
                                                             <select class="form-control" name="suplierId"
                                                                     id=SuplierName"">
@@ -151,7 +178,43 @@ if (isset($_POST['submit'])){
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group">
+                                                <div class="row">
+                                                    <div class="form-group col-md-6">
+                                                        <label for="Size">Size</label>
+                                                        <select id="Size" name="size_Id" class="form-control">
+                                                            <option>Select Size</option>
+
+                                                            <?php
+                                                            $Size = new Size();
+                                                            $getSize = $Size->getAllSize();
+                                                            if ($getSize){
+                                                                while ($result=$getSize->fetch_assoc()){
+                                                                    ?>
+                                                                    <option value="<?=$result['id']?>"><?=$result['sizeName']?></option>
+                                                                <?php }
+                                                            } ?>
+
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="Color">Color</label>
+                                                        <select class="form-control" name="color_Id" id=Color"">
+                                                            <option>Select Color</option>
+                                                            <?php
+                                                            $color = new Color();
+                                                            $getColor = $color->getAllColor();
+                                                            if ($getColor){
+                                                                while ($result=$getColor->fetch_assoc()){
+                                                                    ?>
+                                                                    <option
+                                                                            value="<?=$result['id']?>"><?=$result['color']?>
+                                                                    </option>
+                                                                <?php }
+                                                            } ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
                                                         <label for="productCode">product Code</label>
                                                         <input id="productCode" class="form-control"
                                                                value="<?= $value['productCode']; ?>" name="productCode"
@@ -199,9 +262,9 @@ if (isset($_POST['submit'])){
 
                                                     <div class="form-group">
                                                         <label for="productDescription">product Description</label>
-                                                        <input id="productDescription" class="form-control"
-                                                               value="<?= $value['productDescription']; ?>"
-                                                               name="productDescription" type="text">
+                                                        <textarea id="productDescription" name="productDescription" class="form-control" id="" cols="30" rows="10">
+                                                            <?= $value['productDescription']; ?>
+                                                        </textarea>
                                                     </div>
                                                     <div class="form-group">
                                                         <img src="<?= $value['productImage']; ?>" height="60px" width="60px" alt="">

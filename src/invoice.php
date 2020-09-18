@@ -4,6 +4,17 @@ include_once "classes/Customer.php";
 $cmr = new Customer();
 $ct = new Cart();
 
+
+
+if (!isset($_REQUEST['cus_Id']) || $_REQUEST['cus_Id'] == NULL){
+
+    header("location:pos.php");
+
+}
+else{
+    $id = $_GET['cus_Id'];
+}
+
 if (isset($_POST['submit'])){
     $orderInsert = $ct->orderProduct($_POST);
     $delData = $ct->delCustomerCart();
@@ -59,7 +70,7 @@ if (isset($_POST['submit'])){
         </section>
         <section class="content">
             <?php
-            $getPd = $ct->getCartProduct();
+            $getPd = $ct->getInvoice($id);
             if ($getPd){
                 $i = 0;
                 $sum = 0;

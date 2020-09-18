@@ -19,10 +19,15 @@ class Cart
     }
     public function addTocart($data)
     {
+      /*  echo "<pre>";
 
+        print_r($data);
+
+        die();
+
+        */
         $product_Id = $this->fm->validation($data['product_Id']);
         $product_Id = mysqli_real_escape_string($this->db->link, $product_Id);
-
 
         $price = $this->fm->validation($data['price']);
         $price = mysqli_real_escape_string($this->db->link, $price);
@@ -33,10 +38,10 @@ class Cart
         $quantity = $this->fm->validation($data['quantity']);
         $quantity = mysqli_real_escape_string($this->db->link, $quantity);
 
-
         $sQuery = "select * from products where id = '$product_Id'";
         $result = $this->db->select($sQuery)->fetch_assoc();
         $image = $result['productImage'];
+
 
         $cheQuery = "select * from carts where product_Id = '$product_Id' and customer_Id='$customer_Id'";
         $getPro = $this->db->select($cheQuery);
@@ -59,15 +64,31 @@ class Cart
     public function getCartProduct()
     {
 
-        $query = "select *,carts.id as cartId,products.id=product_Id  from carts,products,customers
+        $query = "select *,carts.id as 
+                    cartId,products.id as product_Id, 
+                    customers.id as cus_Id , 
+                    carts.image as cart_Image  
+                    from carts,products,customers
                                where
                   carts.customer_Id=customers.id 
                               and 
-                 carts.product_Id = products.id
-                            order by 
-                   carts.id
-                              desc 
-              ";
+                 carts.product_Id = products.id              ";
+        $result = $this->db->select($query);
+        return $result;
+    }
+
+    public function getInvoice($cus_Id)
+    {
+
+        $query = "select *,carts.id as 
+                    cartId,products.id as product_Id, 
+                    customers.id as cus_Id , 
+                    carts.image as cart_Image  
+                    from carts,products,customers
+                               where
+                  $cus_Id=customers.id 
+                              and 
+                 carts.product_Id = products.id              ";
         $result = $this->db->select($query);
         return $result;
     }

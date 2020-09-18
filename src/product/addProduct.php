@@ -1,5 +1,8 @@
 <?php
 include_once "../classes/Product.php";
+include_once "../classes/Size.php";
+include_once "../classes/Brand.php";
+include_once "../classes/Color.php";
 include_once "../classes/Category.php";
 include_once "../classes/Suplier.php";
 $pro = new Product();
@@ -64,7 +67,7 @@ include_once "../inc/sidebar.php";
                             <div class="card-header">
                                 <h2>
                                     <?php
-                                    if ($getProInserted){
+                                    if (isset($getProInserted)){
                                         echo $getProInserted;
                                     }
                                     ?>
@@ -79,7 +82,23 @@ include_once "../inc/sidebar.php";
                                         <input id="productName" class="form-control" name="productName" type="text">
                                     </div>
                                     <div class="row">
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-4">
+                                        <label for="categoryName">Brand Name</label>
+                                        <select id="categoryName" name="brand_Id" class="form-control">
+                                            <option>Select Brand</option>
+
+                                            <?php
+                                            $br = new Brand();
+                                            $getbr = $br->getAllBrand();
+                                            if ($getbr){
+                                                while ($result=$getbr->fetch_assoc()){
+                                                    ?>
+                                                    <option value="<?=$result['id']?>"><?=$result['brandName']?></option>
+                                                <?php } } ?>
+
+                                        </select>
+                                    </div>
+                                        <div class="form-group col-md-4">
                                         <label for="categoryName">category Name</label>
                                         <select id="categoryName" name="catId" class="form-control">
                                             <option>Select Category</option>
@@ -95,7 +114,7 @@ include_once "../inc/sidebar.php";
 
                                         </select>
                                     </div>
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-4">
                                         <label for="SuplierName">Suplier Name</label>
                                         <select class="form-control" name="suplierId" id=SuplierName"">
                                             <option>Select Suplier</option>
@@ -109,6 +128,42 @@ include_once "../inc/sidebar.php";
                                                             value="<?=$result['id']?>"><?=$result['firstname']?>
                                                     </option>
                                                     <?php } } ?>
+                                        </select>
+                                    </div>
+                                    </div>
+                                    <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label for="Size">Size</label>
+                                        <select id="Size" name="size_Id" class="form-control">
+                                            <option>Select Size</option>
+
+                                            <?php
+                                            $Size = new Size();
+                                            $getSize = $Size->getAllSize();
+                                            if ($getSize){
+                                                while ($result=$getSize->fetch_assoc()){
+                                                    ?>
+                                                    <option value="<?=$result['id']?>"><?=$result['sizeName']?></option>
+                                                <?php }
+                                            } ?>
+
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="Color">Color</label>
+                                        <select class="form-control" name="color_Id" id=Color"">
+                                            <option>Select Color</option>
+                                            <?php
+                                            $color = new Color();
+                                            $getColor = $color->getAllColor();
+                                             if ($getColor){
+                                                while ($result=$getColor->fetch_assoc()){
+                                                    ?>
+                                                    <option
+                                                            value="<?=$result['id']?>"><?=$result['color']?>
+                                                    </option>
+                                                    <?php }
+                                             } ?>
                                         </select>
                                     </div>
                                     </div>

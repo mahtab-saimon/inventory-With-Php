@@ -62,7 +62,7 @@ class Customer
         $div = explode('.', $file_name);
         $file_ext = strtolower(end($div));
         $unique_image = substr(md5(time()), 0, 10) . '.' . $file_ext;
-        $uploaded_image = "../img/customer" . $unique_image;
+        $uploaded_image = "..//img/customer/" . $unique_image;
 
         if ($firstname == "" || $lastname == "" || $email == "" || $phone == "" || $address == "" || $shopName == "" || $accountHolder == "" || $accountNumber == ""|| $bankName == ""|| $bankBranch == ""|| $city == ""){
             $msg="<span style='color:red; font_size:18px;'>Field must not be empty ..</span>";
