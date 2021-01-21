@@ -2701,7 +2701,7 @@ StreamHelper.prototype = {
             // an object stream containing blob/arraybuffer/uint8array/string
             // is strange and I don't know if it would be useful.
             // I you find this comment and have a good usecase, please open a
-            // bug report !
+            // bug sales_report !
             throw new Error(this._outputType + " is not supported by this method");
         }
 
@@ -9851,7 +9851,7 @@ module.exports = function inflate_table(type, lens, lens_index, codes, table, ta
     table[table_index++] = (1 << 24) | (64 << 16) | 0;
 
     opts.bits = 1;
-    return 0;     /* no symbols, but wait for decoding to report error */
+    return 0;     /* no symbols, but wait for decoding to sales_report error */
   }
   for (min = 1; min < max; min++) {
     if (count[min] !== 0) { break; }

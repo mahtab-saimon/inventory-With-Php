@@ -1,8 +1,8 @@
 <?php
 include_once "../connection.php";
 if (isset($_POST['checking_delete'])){
-    $pro_id = $_POST['pro_id'];
-       $query = "delete from carts where id = '$pro_id' ";
+    $product_id = $_POST['product_id'];
+       $query = "delete from carts where product_Id = '$product_id' ";
     $query_run = mysqli_query($conn, $query);
     if($query_run)
     {

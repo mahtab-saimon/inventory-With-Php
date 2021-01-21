@@ -12,14 +12,14 @@ if (isset($_REQUEST['proId'])){
 ?>
 <?php
 if (isset($_REQUEST['active_id'])){
-    $id = $_REQUEST['active_id'];
+    $id = $_GET['active_id'];
     $active = $pro->activeBrandById($id);
 }
 ?>
 
 <?php
 if (isset($_REQUEST['in_ctive_id'])){
-    $id = $_REQUEST['in_ctive_id'];
+    $id = $_GET['in_ctive_id'];
     $inactive = $pro->inActiveBrandById($id);
 }
 ?>
@@ -63,6 +63,7 @@ if (isset($_REQUEST['in_ctive_id'])){
                         <h1>Product</h1>
                     </div>
                     <div class="col-sm-6">
+                        <a href="addProduct.php" class="btn btn-outline-info ">Add Product</a>
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
                             <li class="breadcrumb-item active">All Product</li>
@@ -89,14 +90,10 @@ if (isset($_REQUEST['in_ctive_id'])){
                                         <th>SL</th>
                                         <th>product Name</th>
                                         <th>product Code</th>
-                                        <th>product Plce</th>
                                         <th>category </th>
                                         <th>Suplier </th>
-                                        <th>product Route</th>
-                                        <th>buy Date</th>
-                                        <th>expire Date</th>
                                         <th>buying Price</th>
-                                        <th>selling Price</th>
+                                        <th>Quantity</th>
                                         <th>status</th>
                                         <th>product Image</th>
                                         <th>Actions</th>
@@ -114,22 +111,16 @@ if (isset($_REQUEST['in_ctive_id'])){
                                                 <td><?= $i?></td>
                                                 <td><?= $result['productName']; ?></td>
                                                 <td><?= $result['productCode']; ?></td>
-                                                <td><?= $result['productPlce']; ?></td>
                                                 <td><?= $result['categoryName']; ?></td>
                                                 <td><?= $result['firstname']; ?></td>
-                                                <td><?= $result['productRoute']; ?></td>
-                                                <td><?= $result['buyDate']; ?></td>
-                                                <td><?= $result['expireDate']; ?></td>
-                                                <td><?= $result['buyingPrice']; ?></td>
+                                                <td><?= $result['stock_quantity']; ?></td>
                                                 <td><?= $result['sellingPrice']; ?></td>
                                                 <td>
                                                     <?php
-                                                    if($result['status'] == '1'){
-                                                        ?>
+                                                    if($result['p_status'] == '1'){ ?>
                                                         <span class="badge badge-success">Active</span>
                                                         <?php
-                                                    } else {
-                                                        ?>
+                                                    } else { ?>
                                                         <span class="badge badge-danger">Inactive</span>
                                                         <?php
                                                     }
@@ -140,13 +131,13 @@ if (isset($_REQUEST['in_ctive_id'])){
                                                 </td>
                                                 <td>
                                                     <?php
-                                                    if($result['status'] == '1'){
+                                                    if($result['p_status'] == '1'){
                                                         ?>
-                                                        <a href="?in_ctive_id=<?=$result['productId']; ?>" class="btn btn-success btn-sm"> <i class="fa fa-ban"></i>Inactive</a>
+                                                        <a href="?in_ctive_id=<?= $result['productId']; ?>" class="btn btn-success btn-sm"><i class="fa fa-ban"></i>Inactive</a>
                                                         <?php
                                                     } else {
                                                         ?>
-                                                        <a href="?active_id=<?=$result['productId']; ?>" class="btn btn-danger btn-sm"> <i class="fa fa-thumbs-up">Active</i></a>
+                                                        <a href="?active_id=<?= $result['productId']; ?>" class="btn btn-danger btn-sm"><i class="fa fa-thumbs-up">Active</i></a>
                                                         <?php
                                                     }
                                                     ?>
@@ -154,7 +145,7 @@ if (isset($_REQUEST['in_ctive_id'])){
                                                     <a href="editProduct.php?proId=<?= $result['productId']; ?>" class="btn btn-info btn-sm">
                                                         <i class="fa fa-edit"></i>
                                                     </a>
-                                                    <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#myBtn<?= $result['id']; ?> ">
+                                                    <button type="button" class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#myBtn<?= $result['id']; ?> ">
                                                         <i class="fa fa-trash"></i>
                                                     </button>
                                                 </td>
@@ -186,15 +177,11 @@ if (isset($_REQUEST['in_ctive_id'])){
                                         <th>SL</th>
                                         <th>product Name</th>
                                         <th>product Code</th>
-                                        <th>product Plce</th>
                                         <th>category </th>
                                         <th>Suplier </th>
-                                        <th>product Route</th>
-                                        <th>buy Date</th>
-                                        <th>expire Date</th>
                                         <th>buying Price</th>
                                         <th>selling Price</th>
-                                        <th>Description</th>
+                                        <th>status</th>
                                         <th>product Image</th>
                                         <th>Actions</th>
                                     </tr>

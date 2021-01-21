@@ -10,7 +10,7 @@ $cmr = new Customer();
 $ct = new Cart();
 
 if (isset($_POST['customerInsert'])){
-    $customerInsert = $cmr->customerInsert($_POST,$_FILES);
+    $customerInsert = $cmr->customerInsert($_POST);
 }
 
 
@@ -101,12 +101,8 @@ if (isset($_POST['quantityBtn'])){
                                 <form action="" method="post"  enctype="multipart/form-data">
                                     <div class="card-body">
                                         <div class="form-group">
-                                            <label for="firstname">Firstname</label>
+                                            <label for="firstname">Name</label>
                                             <input id="firstname" class="form-control" name="firstname" type="text">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="lastname">Lastname</label>
-                                            <input id="lastname" class="form-control" name="lastname" type="text">
                                         </div>
                                         <div class="form-group">
                                             <label for="email">Email</label>
@@ -116,45 +112,9 @@ if (isset($_POST['quantityBtn'])){
                                             <label for="email">Phone</label>
                                             <input id="email" class="form-control" name="phone" type="text">
                                         </div>
-
                                         <div class="form-group">
                                             <label for="address">address</label>
                                             <input id="address" class="form-control" name="address" type="text">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="accountHolder">Account Holder</label>
-                                            <input id="accountHolder" class="form-control" name="accountHolder" type="text">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="accountNumber">Account Number</label>
-                                            <input id="accountNumber" class="form-control" name="accountNumber" type="text">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="bankName">Bank Name</label>
-                                            <input id="bankName" class="form-control" name="bankName" type="text">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="bankBranch">Bank Branch</label>
-                                            <input id="bankBranch" class="form-control" name="bankBranch" type="text">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="city">city</label>
-                                            <input id="city" class="form-control" name="city" type="text">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputFile">image</label>
-                                            <div class="input-group">
-                                                <div class="custom-file">
-                                                    <input type="file"  name="image" class="custom-file-input" id="exampleInputFile">
-                                                    <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                                                </div>
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text">Upload</span>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                     <!-- /.card-body -->
@@ -203,7 +163,7 @@ if (isset($_POST['quantityBtn'])){
                                             {
                                                 ?>
                                                 <option value="<?= $results['id']; ?>">
-                                                    <?= $results['firstname']; ?>
+                                                    <?= $results['phone']; ?>
                                                 </option>
                                                 <?php
                                             }
@@ -256,9 +216,10 @@ if (isset($_POST['quantityBtn'])){
                                 <table class="table">
                                     <thead>
                                     <tr>
-                                        <th>#</th>
+                                        <th>P_Id</th>
                                         <th>Product Name</th>
                                         <th>Price</th>
+                                        <th>Available Quantity</th>
                                         <th>Quantity</th>
                                         <th>Subtotal</th>
                                         <th>Action</th>
@@ -375,7 +336,6 @@ if (isset($_POST['quantityBtn'])){
             // alert(customer_name);
             var show ='<h4>'+customer_id+'</h4>'
             $('#customers_products').append(show);
-
         });
 
         $("#products").change(function(){
@@ -421,10 +381,11 @@ if (isset($_POST['quantityBtn'])){
                 // console.log(response);
                 $.each(response, function (key, value) {
                     var show = '<tr>'+
-                        '<td id="pro_id" class="pro_id">'+value['cartId']+'</td>\
+                        '<td id="pro_id" class="pro_id">'+value['product_Id']+'</td>\
                                  <td>'+value['productName']+'</td>\
                                  <td>'+value['price']+'</td>\
-                                 <td><input id="quantity" class="myInput" type="number" min="1" value='+value['quantity']+' ><button id="student_update_ajax" type="button" class="btn btn-info btn-sm">Update</button></td>\
+                                 <td>'+value['stock_quantity']+'</td>\
+                                 <td><input id="quantity" class="myInput" type="number" min="1" value='+value['quantity']+' ><button id="update_quantity" type="button" class="btn btn-info btn-sm btn-block mt-1"><i class="fas fa-shopping-cart"></i></button></td>\
                                  <td id="subtotal">'+value['price'] * value['quantity'] +'</td>\
                                 <td>\
                                     <a href="" class="badge btn-danger delete_btn">Remove</a>\
@@ -442,9 +403,9 @@ if (isset($_POST['quantityBtn'])){
 <script>
     $(document).ready(function () {
 
-        $(document).on("click", "#student_update_ajax", function () {
-            var pro_id = $(this).closest('tr').find('#pro_id').text();
-            // alert(pro_id);
+        $(document).on("click", "#update_quantity", function () {
+            var product_id = $(this).closest('tr').find('.pro_id').text();
+          //   alert(product_id);
             var quantity=$('#quantity').val();
             //  alert(quantity);
             $.ajax({
@@ -452,10 +413,11 @@ if (isset($_POST['quantityBtn'])){
                 url: "ajaxCrud/updateCode.php",
                 data: {
                     'checking_update':true,
-                    'pro_id': pro_id,
+                    'product_id': product_id,
                     'quantity': quantity,
                 },
                 success: function (response) {
+                 //   alert(response)
                     var success = '<div class="alert alert-success alert-dismissible fade show" role="alert">\n' +
                         '  <strong></strong> '+response+'\n' +
                         '  <button type="button" class="close" data-dismiss="alert" aria-label="Close">\n' +
@@ -479,14 +441,14 @@ if (isset($_POST['quantityBtn'])){
 <script>
     getdata();
     $(document).on("click", ".delete_btn", function () {
-        var pro_id = $(this).closest('tr').find('.pro_id').text();
-
+        var product_id = $(this).closest('tr').find('.pro_id').text();
+//alert(pro_id);
         $.ajax({
             type: "POST",
             url: "ajaxCrud/deleteCode.php",
             data: {
                 'checking_delete': true,
-                'pro_id': pro_id,
+                'product_id': product_id,
             },
             success: function (response) {
                 var success = '<div class="alert alert-success alert-dismissible fade show" role="alert">\n' +
@@ -507,7 +469,7 @@ if (isset($_POST['quantityBtn'])){
 </script>
 
 <?php
-include_once "../../inc/tostr.php";
+include_once "../inc/tostr.php";
 ?>
 </body>
 </html>

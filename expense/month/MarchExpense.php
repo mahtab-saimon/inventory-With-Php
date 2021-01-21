@@ -75,7 +75,7 @@ $expence = new Expence();
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <table id="example1" class="table table-bordered table-striped">
+                                <table id="example1" class="table">
                                     <thead>
                                     <tr>
                                         <th>SL</th>
@@ -88,6 +88,7 @@ $expence = new Expence();
                                     $getexpence = $expence->januaryExpense();
                                     if ($getexpence){
                                         $i=0;
+                                        $totalAmount=0;
                                         while ($result = $getexpence->fetch_assoc()) {
                                             $i++;
 
@@ -98,24 +99,28 @@ $expence = new Expence();
                                                 <td><?= $result['date']; ?></td>
                                                 <td><?= $result['amount']; ?></td>
                                             </tr>
-
                                             <?php
+                                            $totalAmount += $result['amount'];
                                         }
                                     }
-
                                     ?>
+                                        <tr>
+                                            <td colspan="5">
+                                                <h1 class="text-center">Total Expanse: <?=$totalAmount?> </h1>
+                                            </td>
+                                        </tr>
                                     </tbody>
-                                    <tfoot>
-                                    <tr>
-                                        <th>SL</th>
-                                        <th>Details</th>
-                                        <th>Date</th>
-                                        <th>Amount</th>
-                                    </tr>
-                                    </tfoot>
                                 </table>
                             </div>
                             <!-- /.card-body -->
+                        </div>
+                        <div class="row no-print">
+                            <div class="col-12">
+                                <a href="#" onclick="print();" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+                                <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
+                                    <i class="fas fa-download"></i> Generate PDF
+                                </button>
+                            </div>
                         </div>
                         <!-- /.card -->
                     </div>

@@ -36194,7 +36194,7 @@ module.exports = function inflate_table(type, lens, lens_index, codes, table, ta
     table[table_index++] = (1 << 24) | (64 << 16) | 0;
 
     opts.bits = 1;
-    return 0;     /* no symbols, but wait for decoding to report error */
+    return 0;     /* no symbols, but wait for decoding to sales_report error */
   }
   for (min = 1; min < max; min++) {
     if (count[min] !== 0) { break; }

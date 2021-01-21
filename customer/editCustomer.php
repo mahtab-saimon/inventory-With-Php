@@ -91,10 +91,6 @@ if (isset($_POST['submit'])){
                                                 <input id="firstname" class="form-control" value="<?= $result['firstname']; ?>" name="firstname" type="text">
                                             </div>
                                             <div class="form-group">
-                                                <label for="lastname">Lastname</label>
-                                                <input id="lastname" class="form-control" value="<?= $result['lastname']; ?>" name="lastname" type="text">
-                                            </div>
-                                            <div class="form-group">
                                                 <label for="email">Email</label>
                                                 <input id="email" class="form-control" value="<?= $result['email']; ?>" name="email" type="email">
                                             </div>
@@ -105,43 +101,6 @@ if (isset($_POST['submit'])){
                                             <div class="form-group">
                                                 <label for="address">address</label>
                                                 <input id="address" class="form-control" value="<?= $result['address']; ?>" name="address" type="text">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="salary">Account Holder</label>
-                                                <input id="salary" class="form-control" value="<?= $result['accountHolder']; ?>" name="accountHolder" type="text">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="vacation">Account Number</label>
-                                                <input id="vacation" class="form-control" value="<?= $result['accountNumber']; ?>" name="accountNumber" type="text">
-                                            </div>
-
-                                              <div class="form-group">
-                                                <label for="vacation">Bank Name</label>
-                                                <input id="vacation" class="form-control" value="<?= $result['bankName']; ?>" name="bankName" type="text">
-                                            </div>
-
-                                              <div class="form-group">
-                                                <label for="vacation">Bank Branch</label>
-                                                <input id="vacation" class="form-control" value="<?= $result['bankBranch']; ?>" name="bankBranch" type="text">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="city">city</label>
-                                                <input id="city" class="form-control" value="<?= $result['city']; ?>" name="city" type="text">
-                                            </div>
-                                            <div class="form-group">
-                                                <img src="<?= $result['image']; ?>" height="60px" width="60px"alt="">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleInputFile">image</label>
-                                                <div class="input-group">
-                                                    <div class="custom-file">
-                                                        <input type="file" name="image" class="custom-file-input" id="exampleInputFile">
-                                                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                                                    </div>
-                                                    <div class="input-group-append">
-                                                        <span class="input-group-text">Upload</span>
-                                                    </div>
-                                                </div>
                                             </div>
                                             <?php
                                         }

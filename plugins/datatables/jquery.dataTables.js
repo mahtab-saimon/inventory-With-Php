@@ -13931,7 +13931,7 @@
 		/**
 		 * Error reporting.
 		 * 
-		 * How should DataTables report an error. Can take the value 'alert',
+		 * How should DataTables sales_report an error. Can take the value 'alert',
 		 * 'throw', 'none' or a function.
 		 *
 		 *  @type string|function

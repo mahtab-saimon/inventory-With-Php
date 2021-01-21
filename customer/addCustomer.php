@@ -77,12 +77,8 @@ include_once $filepath."/../inc/sidebar.php";
                             <form action="" method="post"  enctype="multipart/form-data">
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label for="firstname">Firstname</label>
+                                        <label for="firstname">Name</label>
                                         <input id="firstname" class="form-control" name="firstname" type="text">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="lastname">Lastname</label>
-                                        <input id="lastname" class="form-control" name="lastname" type="text">
                                     </div>
                                     <div class="form-group">
                                         <label for="email">Email</label>
@@ -92,45 +88,9 @@ include_once $filepath."/../inc/sidebar.php";
                                         <label for="email">Phone</label>
                                         <input id="email" class="form-control" name="phone" type="text">
                                     </div>
-
                                     <div class="form-group">
                                         <label for="address">address</label>
                                         <input id="address" class="form-control" name="address" type="text">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="accountHolder">Account Holder</label>
-                                        <input id="accountHolder" class="form-control" name="accountHolder" type="text">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="accountNumber">Account Number</label>
-                                        <input id="accountNumber" class="form-control" name="accountNumber" type="text">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="bankName">Bank Name</label>
-                                        <input id="bankName" class="form-control" name="bankName" type="text">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="bankBranch">Bank Branch</label>
-                                        <input id="bankBranch" class="form-control" name="bankBranch" type="text">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="city">city</label>
-                                        <input id="city" class="form-control" name="city" type="text">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputFile">image</label>
-                                        <div class="input-group">
-                                            <div class="custom-file">
-                                                <input type="file"  name="image" class="custom-file-input" id="exampleInputFile">
-                                                <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                                            </div>
-                                            <div class="input-group-append">
-                                                <span class="input-group-text">Upload</span>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                                 <!-- /.card-body -->

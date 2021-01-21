@@ -46,6 +46,7 @@ include_once "../inc/sidebar.php";
                         <h1>Suplier Form</h1>
                     </div>
                     <div class="col-sm-6">
+                        <a href="allSuplier.php" class="btn btn-outline-info ">All Suplier</a>
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
                             <li class="breadcrumb-item active">Add Suplier</li>
@@ -67,55 +68,33 @@ include_once "../inc/sidebar.php";
                             </div>
                             <form action="" method="post"  enctype="multipart/form-data">
                                 <div class="card-body">
-                                    <div class="form-group">
-                                        <label for="firstname">Firstname</label>
-                                        <input id="firstname" class="form-control" name="firstname" type="text">
+                                    <div class="row">
+                                        <div class="col form-group">
+                                            <label for="firstname">Name</label>
+                                            <input id="firstname" class="form-control" name="firstname" type="text">
+                                        </div>
+                                        <div class="col form-group">
+                                            <label for="email">Email</label>
+                                            <input id="email" class="form-control" name="email" type="email">
+                                        </div>
+                                        <div class="col form-group">
+                                            <label for="email">Phone</label>
+                                            <input id="email" class="form-control" name="phone" type="text">
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="lastname">Lastname</label>
-                                        <input id="lastname" class="form-control" name="lastname" type="text">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="email">Email</label>
-                                        <input id="email" class="form-control" name="email" type="email">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="email">Phone</label>
-                                        <input id="email" class="form-control" name="phone" type="text">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="address">address</label>
-                                        <input id="address" class="form-control" name="address" type="text">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="shopName">shopName</label>
-                                        <input id="shopName" class="form-control" name="shopName" type="text">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="accountHolder">accountHolder</label>
-                                        <input id="accountHolder" class="form-control" name="accountHolder" type="text">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="accountNumber">accountNumber</label>
-                                        <input id="accountNumber" class="form-control" name="accountNumber" type="text">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="bankName">bankName</label>
-                                        <input id="bankName" class="form-control" name="bankName" type="text">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="bankBranch">bankBranch</label>
-                                        <input id="bankBranch" class="form-control" name="bankBranch" type="text">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="city">city</label>
-                                        <input id="city" class="form-control" name="city" type="text">
+                                    <div class="row">
+                                        <div class="col form-group">
+                                            <label for="address">address</label>
+                                            <input id="address" class="form-control" name="address" type="text">
+                                        </div>
+                                        <div class="col form-group">
+                                            <label for="accountNumber">Account Number</label>
+                                            <input id="accountNumber" class="form-control" name="accountNumber" type="text">
+                                        </div>
+                                        <div class="col form-group">
+                                            <label for="bankName">BankName</label>
+                                            <input id="bankName" class="form-control" name="bankName" type="text">
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputFile">image</label>

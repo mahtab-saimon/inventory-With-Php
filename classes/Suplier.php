@@ -24,9 +24,6 @@ class Suplier
         $firstname = $this->fm->validation($data['firstname']);
         $firstname = mysqli_real_escape_string($this->db->link, $firstname);
 
-        $lastname = $this->fm->validation($data['lastname']);
-        $lastname = mysqli_real_escape_string($this->db->link, $lastname);
-
         $email = $this->fm->validation($data['email']);
         $email = mysqli_real_escape_string($this->db->link, $email);
 
@@ -36,23 +33,12 @@ class Suplier
         $address = $this->fm->validation($data['address']);
         $address = mysqli_real_escape_string($this->db->link, $address);
 
-        $shopName = $this->fm->validation($data['shopName']);
-        $shopName= mysqli_real_escape_string($this->db->link,$shopName);
-
-        $accountHolder = $this->fm->validation($data['accountHolder']);
-        $accountHolder= mysqli_real_escape_string($this->db->link, $accountHolder);
-
         $accountNumber = $this->fm->validation($data['accountNumber']);
         $accountNumber = mysqli_real_escape_string($this->db->link,$accountNumber);
 
         $bankName = $this->fm->validation($data['bankName']);
         $bankName= mysqli_real_escape_string($this->db->link, $bankName);
 
-        $bankBranch = $this->fm->validation($data['bankBranch']);
-        $bankBranch = mysqli_real_escape_string($this->db->link,$bankBranch);
-
-        $city = $this->fm->validation($data['city']);
-        $city = mysqli_real_escape_string($this->db->link, $city);
 
         $permited = array('jpg', 'jpeg', 'png', 'gif');
         $file_name = $file['image']['name'];
@@ -64,21 +50,20 @@ class Suplier
         $unique_image = substr(md5(time()), 0, 10) . '.' . $file_ext;
         $uploaded_image = "../img/suplier/" . $unique_image;
 
-        if ($firstname == "" || $lastname == "" || $email == "" || $phone == "" || $address == "" || $shopName == "" || $accountHolder == "" || $accountNumber == ""|| $bankName == ""|| $bankBranch == ""|| $city == ""){
+        if ($firstname == "" || $email == "" || $phone == "" || $address == "" || $accountNumber == ""|| $bankName == ""){
             $_SESSION['status'] = "Field Must Not be epmty";
             $_SESSION['status_code'] = "error";
         }
-        $mailQuery = "select * from supliers where email = '$email' limit 1";
-        $mailCheck = $this->db->select($mailQuery);
-        if ($mailCheck !=false){
-            $msg="<span style='color:red; font_size:18px;'>Email Already Exist ..</span>";
-            return $msg;
+        $phoneQuery = "select * from supliers where phone = '$phone' limit 1";
+        $phoneCheck = $this->db->select($phoneQuery);
+        if ($phoneCheck !=false){
+            $_SESSION['status'] = "phone Already Exist";
+            $_SESSION['status_code'] = "error";
         }else{
             move_uploaded_file($file_temp, $uploaded_image);
-            $query = "INSERT INTO 
-                        supliers(firstname , lastname,email,phone,address,shopName, image ,accountHolder , accountNumber, bankName, bankBranch, city) 
+            $query = "INSERT INTO supliers(firstname, email, phone, address, image, accountNumber, bankName) 
                         VALUES
-                        ('$firstname', '$lastname', '$email', '$phone', '$address', '$shopName', '$uploaded_image', '$accountHolder', '$accountNumber', '$bankName','$bankBranch', '$city' )";
+                        ('$firstname',  '$email', '$phone', '$address', '$uploaded_image', '$accountNumber', '$bankName' )";
             $inserted_rows = $this->db->insert($query);
             if ($inserted_rows) {
                 $_SESSION['status'] = "Data Inserted SuccessFully";

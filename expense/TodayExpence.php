@@ -82,6 +82,7 @@ if (isset($_REQUEST['catId'])){
                                         $getexpence = $expence->getTodayExpence();
                                         if ($getexpence){
                                             $i=0;
+                                            $totalAmount=0;
                                             while ($result = $getexpence->fetch_assoc()) {
                                                 $i++;
 
@@ -94,26 +95,27 @@ if (isset($_REQUEST['catId'])){
                                                 </tr>
 
                                                 <?php
+                                                $totalAmount += $result['amount'];
                                             }
                                         }
                                         ?>
                                         <tr class="py-5">
-                                            <?php
-                                            $getTotalexpence = $expence->getTodayTOtalExpence();
-                                            if ($getTotalexpence) {
-                                               $result = $getTotalexpence->fetch_assoc()
-                                                    ?>
-                                                    <td colspan="4">
-                                                        <h1 class="text-center">Total Expanse: <?=$result['sum']?> </h1>
-                                                    </td>
-                                                    <?php
-                                            }
-                                            ?>
+                                            <td colspan="4">
+                                                <h1 class="text-center">Total Expanse: <?=$totalAmount?> </h1>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                             <!-- /.card-body -->
+                        </div>
+                        <div class="row no-print">
+                            <div class="col-12">
+                                <a href="#" onclick="print();" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+                                <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
+                                    <i class="fas fa-download"></i> Generate PDF
+                                </button>
+                            </div>
                         </div>
                         <!-- /.card -->
                     </div>

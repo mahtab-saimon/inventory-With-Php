@@ -77,12 +77,6 @@ if (isset($_REQUEST['cmrId'])){
                                         <th>Name</th>
                                         <th>Phone</th>
                                         <th>Address</th>
-                                        <th>accountHolder</th>
-                                        <th>accountNumber</th>
-                                        <th>bankName</th>
-                                        <th>bankBranch</th>
-                                        <th>city</th>
-                                        <th>image</th>
                                         <th>Actions</th>
                                     </tr>
                                     </thead>
@@ -96,17 +90,9 @@ if (isset($_REQUEST['cmrId'])){
                                             ?>
                                             <tr class="">
                                                 <td><?= $i?></td>
-                                                <td><?= $result['firstname']; ?> <?= $result['lastname'];?></td>
+                                                <td><?= $result['firstname']; ?></td>
                                                 <td><?= $result['phone']; ?></td>
                                                 <td><?= $result['address']; ?></td>
-                                                <td><?= $result['accountHolder']; ?></td>
-                                                <td><?= $result['accountNumber']; ?></td>
-                                                <td><?= $result['bankName']; ?></td>
-                                                <td><?= $result['bankBranch']; ?></td>
-                                                <td><?= $result['city']; ?></td>
-                                                <td>
-                                                    <img src="<?= $result['image']; ?>" height="60px" width="60px"alt="">
-                                                </td>
                                                 <td>
                                                     <a href="#" class="btn btn-success btn-sm"> <i class="fa fa-eye"></i></a>
                                                     <a href="editCustomer.php?cmrId=<?= $result['id']; ?>" class="btn btn-info btn-sm"> <i class="fa fa-edit"></i></a>
@@ -143,12 +129,6 @@ if (isset($_REQUEST['cmrId'])){
                                         <th>Name</th>
                                         <th>Phone</th>
                                         <th>Address</th>
-                                        <th>accountHolder</th>
-                                        <th>accountNumber</th>
-                                        <th>bankName</th>
-                                        <th>bankBranch</th>
-                                        <th>city</th>
-                                        <th>image</th>
                                         <th>Actions</th>
                                     </tr>
                                     </tfoot>

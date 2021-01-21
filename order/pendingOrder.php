@@ -90,7 +90,7 @@ if (isset($_POST['submit'])){
                                                 ?>
                                                 <tr>
                                                     <td><?=$i?></td>
-                                                    <td><?=$result['firstname']?> <?=$result['lastname']?></td>
+                                                    <td><?=$result['firstname']?></td>
                                                     <td><?=$result['orderDate']?></td>
                                                     <td><?=$result['totalProducts']?></td>
                                                     <td><?=$result['total']?></td>

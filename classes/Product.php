@@ -42,9 +42,6 @@ class Product
         $productCode = $this->fm->validation($data['productCode']);
         $productCode = mysqli_real_escape_string($this->db->link, $data['productCode']);
 
-        $productPlce = $this->fm->validation($data['productPlce']);
-        $productPlce = mysqli_real_escape_string($this->db->link, $data['productPlce']);
-
         $productRoute = $this->fm->validation($data['productRoute']);
         $productRoute = mysqli_real_escape_string($this->db->link, $data['productRoute']);
 
@@ -62,6 +59,8 @@ class Product
 
         $productDescription = $this->fm->validation($data['productDescription']);
         $productDescription = mysqli_real_escape_string($this->db->link, $data['productDescription']);
+        $quantity = $this->fm->validation($data['stock_quantity']);
+        $quantity = mysqli_real_escape_string($this->db->link, $data['stock_quantity']);
 
         $permited = array('jpg', 'jpeg', 'png', 'gif');
         $file_name = $file['productImage']['name'];
@@ -72,13 +71,13 @@ class Product
         $file_ext = strtolower(end($div));
         $unique_image = substr(md5(time()), 0, 10) . '.' . $file_ext;
         $uploaded_image = "../img/product/" . $unique_image;
-        if ($productName == "" || $catId == "" || $suplierId == "" || $productCode == "" || $productPlce == "" || $productRoute == "" || $buyDate == "" || $expireDate == "" || $buyingPrice == "" || $sellingPrice == "" || $productDescription == "" ) {
+        if ($productName == "" || $catId == "" || $suplierId == "" || $productCode == "" || $productRoute == "" || $buyDate == "" || $buyingPrice == "" || $sellingPrice == "" ) {
             $_SESSION['status'] = "Field Must Not be epmty";
             $_SESSION['status_code'] = "error";
         } else {
             move_uploaded_file($file_temp, $uploaded_image);
-            $query = "INSERT INTO products(productName, catId, brand_Id,  size_Id, color_Id, suplierId, productCode, productPlce,productRoute,productDescription ,productImage, buyDate,expireDate ,buyingPrice , sellingPrice ) 
-    VALUES('$productName', '$catId', '$brand_Id', '$size_Id', '$color_Id', '$suplierId', '$productCode', '$productPlce', '$productRoute','$productDescription','$uploaded_image','$buyDate','$expireDate','$buyingPrice','$sellingPrice' )";
+            $query = "INSERT INTO products(productName, catId, brand_Id,  size_Id, color_Id, suplierId, productCode, productRoute,productDescription ,productImage, buyDate,expireDate ,buyingPrice , sellingPrice,stock_quantity ) 
+    VALUES('$productName', '$catId', '$brand_Id', '$size_Id', '$color_Id', '$suplierId', '$productCode',  '$productRoute','$productDescription','$uploaded_image','$buyDate','$expireDate','$buyingPrice','$sellingPrice','$quantity' )";
 
             $inserted_rows = $this->db->insert($query);
             if ($inserted_rows) {
@@ -93,13 +92,11 @@ class Product
     }
     public function getAllProduct()
     {
-        $query = "select *,products.id as productId from products,categories,supliers
+        $query = "select *,products.id as productId, products.status as p_status from products,categories,supliers
                                where
                   products.catId=categories.id 
                               and 
-                  products.suplierId=supliers.id
-                            order by productId desc 
-              ";
+                  products.suplierId=supliers.id";
         $result = $this->db->select($query);
         return $result;
     }
@@ -166,7 +163,7 @@ class Product
         $file_ext = strtolower(end($div));
         $unique_image = substr(md5(time()), 0, 10) . '.' . $file_ext;
         $uploaded_image = "../img/product/" . $unique_image;
-        if ($productName == "" || $catId == "" || $suplierId == "" || $productCode == "" || $productPlce == "" || $productRoute == "" || $buyDate == "" || $expireDate == "" || $buyingPrice == "" || $sellingPrice == "" || $productDescription == "" ) {
+        if ($productName == "" || $catId == "" || $suplierId == "" || $productCode == "" || $productRoute == "" || $buyDate == ""  || $buyingPrice == "" || $sellingPrice == "" || $productDescription == "" ) {
             $msg = "<span style='color:red; font_size:18px;'>Fields must not be empty ..</span>";
             return $msg;
         }  else {
@@ -185,7 +182,6 @@ class Product
                         color_Id=$color_Id,
                         suplierId='$suplierId',
                         productCode='$productCode',
-                        productPlce='$productPlce',
                         productRoute='$productRoute',
                         productDescription='$productDescription',
                         productImage='$uploaded_image',
@@ -214,7 +210,6 @@ class Product
                         catId='$catId',
                         suplierId='$suplierId',
                         productCode='$productCode',
-                        productPlce='$productPlce',
                         productRoute='$productRoute',
                         productDescription='$productDescription',
                         buyDate='$buyDate',
@@ -261,18 +256,16 @@ class Product
     }
 
 
-
     public function activeBrandById($id)
     {
-        $id = mysqli_real_escape_string($this->db->link, $id);
         $query = "UPDATE products SET status = 1 WHERE id = '$id'";
         $updated_rows = $this->db->update($query);
         if ($updated_rows) {
-            $_SESSION['status'] = "SuccessFull";
+            $_SESSION['status'] = "Successfully";
             $_SESSION['status_code'] = "success";
 
         }else {
-            $_SESSION['status'] = "Something went wrong ";
+            $_SESSION['status'] = "Something went wrong";
             $_SESSION['status_code'] = "error";
 
         }
@@ -280,7 +273,6 @@ class Product
     }
     public function inActiveBrandById($id)
     {
-        $id = mysqli_real_escape_string($this->db->link, $id);
         $query = "UPDATE products SET status = 0 WHERE id = '$id'";
         $updated_rows = $this->db->update($query);
         if ($updated_rows) {

@@ -64,25 +64,25 @@ if (isset($_REQUEST['catId'])){
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                   <a class="btn btn-outline-dark" href="month/januaryExpence.php">January</a>
-                                    <a class="btn btn-outline-dark" href="month/FebruaryExpence.php">February</a>
-                                    <a class="btn btn-outline-dark" href="month/MarchExpense.php">March</a>
-                                    <a class="btn btn-outline-dark" href="month/AprilExpense.php">April</a>
-                                    <a class="btn btn-outline-dark" href="month/MayExpense.php">May</a>
-                                    <a class="btn btn-outline-dark" href="month/JuneExpense.php">June</a>
-                                    <a class="btn btn-outline-dark" href="month/JulyExpense.php">July</a>
-                                    <a class="btn btn-outline-dark" href="month/AugustExpense.php">August</a>
-                                    <a class="btn btn-outline-dark" href="month/SeptemberExpense.php">September</a>
-                                    <a class="btn btn-outline-dark" href="month/OctoberExpense.php">October</a>
-                                    <a class="btn btn-outline-dark" href="month/NovemberExpense.php">November</a>
-                                    <a class="btn btn-outline-dark" href="month/DecemberExpense.php">December</a>
+                                <a class="btn btn-outline-dark" href="month/januaryExpence.php">January</a>
+                                <a class="btn btn-outline-dark" href="month/FebruaryExpence.php">February</a>
+                                <a class="btn btn-outline-dark" href="month/MarchExpense.php">March</a>
+                                <a class="btn btn-outline-dark" href="month/AprilExpense.php">April</a>
+                                <a class="btn btn-outline-dark" href="month/MayExpense.php">May</a>
+                                <a class="btn btn-outline-dark" href="month/JuneExpense.php">June</a>
+                                <a class="btn btn-outline-dark" href="month/JulyExpense.php">July</a>
+                                <a class="btn btn-outline-dark" href="month/AugustExpense.php">August</a>
+                                <a class="btn btn-outline-dark" href="month/SeptemberExpense.php">September</a>
+                                <a class="btn btn-outline-dark" href="month/OctoberExpense.php">October</a>
+                                <a class="btn btn-outline-dark" href="month/NovemberExpense.php">November</a>
+                                <a class="btn btn-outline-dark" href="month/DecemberExpense.php">December</a>
                             </div>
                             <div class="card-header">
                                 <h1 class="text-center"><?=date("F")?> <span class="break"></span> All Expense</h1>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <table id="example1" class="table table-bordered table-striped">
+                                <table id="example1" class="table">
                                     <thead>
                                     <tr>
                                         <th>SL</th>
@@ -95,6 +95,7 @@ if (isset($_REQUEST['catId'])){
                                     $getexpence = $expence->getMonthlyExpence();
                                     if ($getexpence){
                                         $i=0;
+                                        $totalAmount=0;
                                         while ($result = $getexpence->fetch_assoc()) {
                                             $i++;
 
@@ -107,39 +108,27 @@ if (isset($_REQUEST['catId'])){
                                             </tr>
 
                                             <?php
+                                            $totalAmount += $result['amount'];
                                         }
                                     }
                                     ?>
                                     <tr>
-                                    <tr></tr>
-                                        <td></td>
-                                        <td></td>
-                                        <?php
-                                        $getTotalexpence = $expence->getTodayTOtalExpence();
-                                        if ($getTotalexpence) {
-                                            while ($result = $getTotalexpence->fetch_assoc()) {
-                                                ?>
-                                                <td>
-
-                                                    <h1 class="text-center">Total Expanse: <?=$result['sum']?> </h1>
-                                                </td>
-                                                <?php
-                                            }
-                                        }
-                                        ?>
+                                        <td colspan="5">
+                                            <h1 class="text-center">Total Expanse: <?=$totalAmount?> </h1>
+                                        </td>
                                     </tr>
                                     </tbody>
-                                    <tfoot>
-                                    <tr>
-                                        <th>SL</th>
-                                        <th>Details</th>
-                                        <th>Date</th>
-                                        <th>Amount</th>
-                                    </tr>
-                                    </tfoot>
                                 </table>
                             </div>
                             <!-- /.card-body -->
+                        </div>
+                        <div class="row no-print">
+                            <div class="col-12">
+                                <a href="#" onclick="print();" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+                                <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
+                                    <i class="fas fa-download"></i> Generate PDF
+                                </button>
+                            </div>
                         </div>
                         <!-- /.card -->
                     </div>

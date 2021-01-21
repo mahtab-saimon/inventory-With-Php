@@ -1,4 +1,5 @@
 <?php
+include_once "pos/connection.php";
 include_once "classes/Employee.php";
 $emp = new Employee();
 ?>
@@ -8,8 +9,28 @@ include_once "classes/Cart.php";
 $ct = new Cart();
 include_once "classes/Expence.php";
 $expence = new Expence();
+include_once "classes/Report.php";
+$rep = new Report();
 ?>
+<?php
+$sql = "SELECT * FROM products WHERE status = 1";
+$query = $conn->query($sql);
+$countProduct = $query->num_rows;
 
+$orderSql = "SELECT * FROM orders";
+$orderQuery = $conn->query($orderSql);
+$countOrder = $orderQuery->num_rows;
+//
+$totalRevenue = 0;
+while ($orderResult = $orderQuery->fetch_assoc()) {
+    $totalRevenue += $orderResult['total'];
+}
+
+$lowStockSql = "SELECT * FROM products WHERE stock_quantity <= 5 AND status = 1";
+$lowStockQuery = $conn->query($lowStockSql);
+$countLowStock = $lowStockQuery->num_rows;
+
+?>
 
 
 <!DOCTYPE html>
@@ -91,6 +112,12 @@ $expence = new Expence();
                         <a href="pos/index.php" class="nav-link">
                             <i class="fa fa-shopping-cart nav-icon"></i>
                             <p>Pos</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="report.php" class="nav-link">
+                            <i class="fa fa-shopping-cart nav-icon"></i>
+                            <p>Report</p>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -323,6 +350,35 @@ $expence = new Expence();
                         <a href="#" class="nav-link  ">
                             <i class="nav-icon fas fa-money-bill-alt"></i>
                             <p>
+                                Sales Report
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="sales_report/monthlyReport.php" class="nav-link">
+                                    <i class="far fa-money-bill-alt nav-icon"></i>
+                                    <p>monthly Sales Report</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="sales_report/report.php" class="nav-link">
+                                    <i class="far fa-money-bill-alt nav-icon"></i>
+                                    <p>Today Sales Report</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="sales_report/yearlyReport.php" class="nav-link">
+                                    <i class="far fa-money-bill-alt nav-icon"></i>
+                                    <p>yearly Sales Report</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item ">
+                        <a href="#" class="nav-link  ">
+                            <i class="nav-icon fas fa-money-bill-alt"></i>
+                            <p>
                                 Expense
                                 <i class="right fas fa-angle-left"></i>
                             </p>
@@ -414,6 +470,7 @@ $expence = new Expence();
                         <!-- small box -->
                         <div class="small-box bg-info">
                             <div class="inner">
+                                <h3><?=$countOrder?></h3>
                                 <p>New Orders</p>
                             </div>
                             <div class="icon">
@@ -427,8 +484,7 @@ $expence = new Expence();
                         <!-- small box -->
                         <div class="small-box bg-success">
                             <div class="inner">
-                                <h3><sup style="font-size: 20px"></sup></h3>
-
+                                <h3><?=$countLowStock?></h3>
                                 <p>Point Of Sale</p>
                             </div>
                             <div class="icon">
@@ -442,16 +498,13 @@ $expence = new Expence();
                         <!-- small box -->
                         <div class="small-box bg-warning">
                             <div class="inner">
-                                <h3>
-
-                                </h3>
-
-                                <p>Cutomer</p>
+                                <h3><?=$totalRevenue?>TK</h3>
+                                <p>Revenue</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-person-add"></i>
                             </div>
-                            <a href="customer/allCustomer.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="order/pendingOrder.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -459,10 +512,7 @@ $expence = new Expence();
                         <!-- small box -->
                         <div class="small-box bg-danger">
                             <div class="inner">
-                                <h3>
-
-                                </h3>
-
+                                <h3><?=$countProduct?></h3>
                                 <p>Product in Stock</p>
                             </div>
                             <div class="icon">
@@ -518,7 +568,7 @@ $expence = new Expence();
                                             while ($result=$getPd->fetch_assoc()) {
                                                 ?>
                                                 <tr>
-                                                    <td><?=$result['firstname']?> <?=$result['lastname']?></td>
+                                                    <td><?=$result['firstname']?></td>
                                                     <td><?=$result['orderDate']?></td>
                                                     <td><?=$result['totalProducts']?></td>
                                                     <td><?=$result['total']?></td>
@@ -555,201 +605,24 @@ $expence = new Expence();
                         <!-- DIRECT CHAT -->
                         <div class="card direct-chat direct-chat-primary">
                             <div class="card-header">
-                                <h3 class="card-title">Direct Chat</h3>
-
-                                <div class="card-tools">
-                                    <span title="3 New Messages" class="badge badge-primary">3</span>
-                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-tool" title="Contacts" data-widget="chat-pane-toggle">
-                                        <i class="fas fa-comments"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
+                                <h3 class="card-title">Generate Report</h3>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <!-- Conversations are loaded here -->
-                                <div class="direct-chat-messages">
-                                    <!-- Message. Default to the left -->
-                                    <div class="direct-chat-msg">
-                                        <div class="direct-chat-infos clearfix">
-                                            <span class="direct-chat-name float-left">Alexander Pierce</span>
-                                            <span class="direct-chat-timestamp float-right">23 Jan 2:00 pm</span>
+                                <div class="col-lg-12 col-6">
+                                    <!-- small box -->
+                                    <div class="small-box bg-danger">
+                                        <div class="inner">
+                                            <p>Generate Report</p>
                                         </div>
-                                        <!-- /.direct-chat-infos -->
-                                        <img class="direct-chat-img" src="dist/img/user1-128x128.jpg" alt="message user image">
-                                        <!-- /.direct-chat-img -->
-                                        <div class="direct-chat-text">
-                                            Is this template really for free? That's unbelievable!
+                                        <div class="icon">
+                                            <i class="ion ion-bag"></i>
                                         </div>
-                                        <!-- /.direct-chat-text -->
+                                        <a href="report.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                                     </div>
-                                    <!-- /.direct-chat-msg -->
-
-                                    <!-- Message to the right -->
-                                    <div class="direct-chat-msg right">
-                                        <div class="direct-chat-infos clearfix">
-                                            <span class="direct-chat-name float-right">Sarah Bullock</span>
-                                            <span class="direct-chat-timestamp float-left">23 Jan 2:05 pm</span>
-                                        </div>
-                                        <!-- /.direct-chat-infos -->
-                                        <img class="direct-chat-img" src="dist/img/user3-128x128.jpg" alt="message user image">
-                                        <!-- /.direct-chat-img -->
-                                        <div class="direct-chat-text">
-                                            You better believe it!
-                                        </div>
-                                        <!-- /.direct-chat-text -->
-                                    </div>
-                                    <!-- /.direct-chat-msg -->
-
-                                    <!-- Message. Default to the left -->
-                                    <div class="direct-chat-msg">
-                                        <div class="direct-chat-infos clearfix">
-                                            <span class="direct-chat-name float-left">Alexander Pierce</span>
-                                            <span class="direct-chat-timestamp float-right">23 Jan 5:37 pm</span>
-                                        </div>
-                                        <!-- /.direct-chat-infos -->
-                                        <img class="direct-chat-img" src="dist/img/user1-128x128.jpg" alt="message user image">
-                                        <!-- /.direct-chat-img -->
-                                        <div class="direct-chat-text">
-                                            Working with AdminLTE on a great new app! Wanna join?
-                                        </div>
-                                        <!-- /.direct-chat-text -->
-                                    </div>
-                                    <!-- /.direct-chat-msg -->
-
-                                    <!-- Message to the right -->
-                                    <div class="direct-chat-msg right">
-                                        <div class="direct-chat-infos clearfix">
-                                            <span class="direct-chat-name float-right">Sarah Bullock</span>
-                                            <span class="direct-chat-timestamp float-left">23 Jan 6:10 pm</span>
-                                        </div>
-                                        <!-- /.direct-chat-infos -->
-                                        <img class="direct-chat-img" src="dist/img/user3-128x128.jpg" alt="message user image">
-                                        <!-- /.direct-chat-img -->
-                                        <div class="direct-chat-text">
-                                            I would love to.
-                                        </div>
-                                        <!-- /.direct-chat-text -->
-                                    </div>
-                                    <!-- /.direct-chat-msg -->
-
                                 </div>
-                                <!--/.direct-chat-messages-->
-
-                                <!-- Contacts are loaded here -->
-                                <div class="direct-chat-contacts">
-                                    <ul class="contacts-list">
-                                        <li>
-                                            <a href="#">
-                                                <img class="contacts-list-img" src="dist/img/user1-128x128.jpg" alt="User Avatar">
-
-                                                <div class="contacts-list-info">
-                          <span class="contacts-list-name">
-                            Count Dracula
-                            <small class="contacts-list-date float-right">2/28/2015</small>
-                          </span>
-                                                    <span class="contacts-list-msg">How have you been? I was...</span>
-                                                </div>
-                                                <!-- /.contacts-list-info -->
-                                            </a>
-                                        </li>
-                                        <!-- End Contact Item -->
-                                        <li>
-                                            <a href="#">
-                                                <img class="contacts-list-img" src="dist/img/user7-128x128.jpg" alt="User Avatar">
-
-                                                <div class="contacts-list-info">
-                          <span class="contacts-list-name">
-                            Sarah Doe
-                            <small class="contacts-list-date float-right">2/23/2015</small>
-                          </span>
-                                                    <span class="contacts-list-msg">I will be waiting for...</span>
-                                                </div>
-                                                <!-- /.contacts-list-info -->
-                                            </a>
-                                        </li>
-                                        <!-- End Contact Item -->
-                                        <li>
-                                            <a href="#">
-                                                <img class="contacts-list-img" src="dist/img/user3-128x128.jpg" alt="User Avatar">
-
-                                                <div class="contacts-list-info">
-                          <span class="contacts-list-name">
-                            Nadia Jolie
-                            <small class="contacts-list-date float-right">2/20/2015</small>
-                          </span>
-                                                    <span class="contacts-list-msg">I'll call you back at...</span>
-                                                </div>
-                                                <!-- /.contacts-list-info -->
-                                            </a>
-                                        </li>
-                                        <!-- End Contact Item -->
-                                        <li>
-                                            <a href="#">
-                                                <img class="contacts-list-img" src="dist/img/user5-128x128.jpg" alt="User Avatar">
-
-                                                <div class="contacts-list-info">
-                          <span class="contacts-list-name">
-                            Nora S. Vans
-                            <small class="contacts-list-date float-right">2/10/2015</small>
-                          </span>
-                                                    <span class="contacts-list-msg">Where is your new...</span>
-                                                </div>
-                                                <!-- /.contacts-list-info -->
-                                            </a>
-                                        </li>
-                                        <!-- End Contact Item -->
-                                        <li>
-                                            <a href="#">
-                                                <img class="contacts-list-img" src="dist/img/user6-128x128.jpg" alt="User Avatar">
-
-                                                <div class="contacts-list-info">
-                          <span class="contacts-list-name">
-                            John K.
-                            <small class="contacts-list-date float-right">1/27/2015</small>
-                          </span>
-                                                    <span class="contacts-list-msg">Can I take a look at...</span>
-                                                </div>
-                                                <!-- /.contacts-list-info -->
-                                            </a>
-                                        </li>
-                                        <!-- End Contact Item -->
-                                        <li>
-                                            <a href="#">
-                                                <img class="contacts-list-img" src="dist/img/user8-128x128.jpg" alt="User Avatar">
-
-                                                <div class="contacts-list-info">
-                          <span class="contacts-list-name">
-                            Kenneth M.
-                            <small class="contacts-list-date float-right">1/4/2015</small>
-                          </span>
-                                                    <span class="contacts-list-msg">Never mind I found...</span>
-                                                </div>
-                                                <!-- /.contacts-list-info -->
-                                            </a>
-                                        </li>
-                                        <!-- End Contact Item -->
-                                    </ul>
-                                    <!-- /.contacts-list -->
-                                </div>
-                                <!-- /.direct-chat-pane -->
                             </div>
                             <!-- /.card-body -->
-                            <div class="card-footer">
-                                <form action="#" method="post">
-                                    <div class="input-group">
-                                        <input type="text" name="message" placeholder="Type Message ..." class="form-control">
-                                        <span class="input-group-append">
-                      <button type="button" class="btn btn-primary">Send</button>
-                    </span>
-                                    </div>
-                                </form>
-                            </div>
                             <!-- /.card-footer-->
                         </div>
                         <!--/.direct-chat -->
@@ -775,7 +648,7 @@ $expence = new Expence();
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <ul class="todo-list" data-widget="todo-list">
-                                    <table id="example1" class="table table-bordered table-striped">
+                                    <table id="example1" class="table">
                                         <thead>
                                         <tr>
                                             <th>SL</th>
@@ -826,11 +699,11 @@ $expence = new Expence();
                     <section class="col-lg-5 connectedSortable">
 
                         <!-- Map card -->
-                        <div class="card bg-gradient-primary">
+                        <div class="card bg-gradient">
                             <div class="card-header border-0">
                                 <h3 class="card-title">
                                     <i class="fas fa-map-marker-alt mr-1"></i>
-                                    Visitors
+                                    Monthly Sales Report
                                 </h3>
                                 <!-- card tools -->
                                 <div class="card-tools">
@@ -844,28 +717,45 @@ $expence = new Expence();
                                 <!-- /.card-tools -->
                             </div>
                             <div class="card-body">
-                                <div id="world-map" style="height: 250px; width: 100%;"></div>
-                            </div>
-                            <!-- /.card-body-->
-                            <div class="card-footer bg-transparent">
-                                <div class="row">
-                                    <div class="col-4 text-center">
-                                        <div id="sparkline-1"></div>
-                                        <div class="text-white">Visitors</div>
-                                    </div>
-                                    <!-- ./col -->
-                                    <div class="col-4 text-center">
-                                        <div id="sparkline-2"></div>
-                                        <div class="text-white">Online</div>
-                                    </div>
-                                    <!-- ./col -->
-                                    <div class="col-4 text-center">
-                                        <div id="sparkline-3"></div>
-                                        <div class="text-white">Sales</div>
-                                    </div>
-                                    <!-- ./col -->
-                                </div>
-                                <!-- /.row -->
+                                <table id="example1" class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>SL</th>
+                                        <th>Order Date</th>
+                                        <th>Client Name</th>
+                                        <th>Contact</th>
+                                        <th>Grand Total</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php
+                                    $getexpence = $rep->getMonthlyReport();
+                                    if ($getexpence){
+                                        $i=0;
+                                        $totalAmount=0;
+                                        while ($result = $getexpence->fetch_assoc()) {
+                                            $i++;
+                                            ?>
+                                            <tr class="">
+                                                <td><?= $i?></td>
+                                                <td><?=$result['orderDate'];?></td>
+                                                <td><?=$result['firstname'];?></td>
+                                                <td><?=$result['phone'];?></td>
+                                                <td><?=$result['total'];?></td>
+                                            </tr>
+
+                                            <?php
+                                            $totalAmount += $result['total'];
+                                        }
+                                    }
+                                    ?>
+                                    <tr>
+                                        <td colspan="5">
+                                            <h1 class="text-center">Total Sales: <?=$totalAmount;?> </h1>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                         <!-- /.card -->
@@ -890,7 +780,7 @@ $expence = new Expence();
                             </div>
                             <div class="card-body">
                                 <!--                                <canvas class="chart" id="line-chart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>-->
-                                <table class="table table-bordered table-striped">
+                                <table id="example1" class="table">
                                     <thead>
                                     <tr>
                                         <th>SL</th>
@@ -903,6 +793,7 @@ $expence = new Expence();
                                     $getexpence = $expence->getMonthlyExpence();
                                     if ($getexpence){
                                         $i=0;
+                                        $totalAmount=0;
                                         while ($result = $getexpence->fetch_assoc()) {
                                             $i++;
 
@@ -915,44 +806,18 @@ $expence = new Expence();
                                             </tr>
 
                                             <?php
+                                            $totalAmount += $result['amount'];
                                         }
                                     }
                                     ?>
-                                    <tr>
-                                    <tr></tr>
-                                    <td></td>
-                                    <?php
-                                    $getTotalexpence = $expence->getTodayTOtalExpence();
-                                    if ($getTotalexpence) {
-                                        while ($result = $getTotalexpence->fetch_assoc()) {
-                                            ?>
-                                            <td>
-                                                <h1 class="text-center">Total Expanse: <?=$result['sum']?> </h1>
-                                            </td>
-                                            <?php
-                                        }
-                                    }
-                                    ?>
-                                    <td></td>
-                                    <td></td>
-                                    </tr>
                                     </tbody>
-                                    <tfoot>
-                                    <tr>
-                                        <th>SL</th>
-                                        <th>Details</th>
-                                        <th>Date</th>
-                                        <th>Amount</th>
-                                    </tr>
-                                    </tfoot>
                                 </table>
+
                             </div>
                             <!-- /.card-body -->
                             <div class="card-footer bg-transparent">
                                 <div class="row">
-                                    <h1>
-                                        Monthly Expense
-                                    </h1>
+                                    <h1 class="text-center">Total Expanse: <?=$totalAmount?> </h1>
                                 </div>
                                 <!-- /.row -->
                             </div>
@@ -961,44 +826,6 @@ $expence = new Expence();
                         <!-- /.card -->
 
                         <!-- Calendar -->
-                        <div class="card bg-gradient-success">
-                            <div class="card-header border-0">
-
-                                <h3 class="card-title">
-                                    <i class="far fa-calendar-alt"></i>
-                                    Calendar
-                                </h3>
-                                <!-- tools card -->
-                                <div class="card-tools">
-                                    <!-- button with a dropdown -->
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" data-offset="-52">
-                                            <i class="fas fa-bars"></i>
-                                        </button>
-                                        <div class="dropdown-menu" role="menu">
-                                            <a href="#" class="dropdown-item">Add new event</a>
-                                            <a href="#" class="dropdown-item">Clear events</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a href="#" class="dropdown-item">View calendar</a>
-                                        </div>
-                                    </div>
-                                    <button type="button" class="btn btn-success btn-sm" data-card-widget="collapse">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-success btn-sm" data-card-widget="remove">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                                <!-- /. tools -->
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body pt-0">
-                                <!--The calendar -->
-                                <div id="calendar" style="width: 100%"></div>
-                            </div>
-                            <!-- /.card-body -->
-                        </div>
-                        <!-- /.card -->
                     </section>
                     <!-- right col -->
                 </div>

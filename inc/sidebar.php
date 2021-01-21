@@ -8,7 +8,7 @@
                 <img src="../<?=Session::get('image')?>" class="img-circle elevation-3" alt="Admin Image">
             </div>
             <div class="info">
-                <a href="index.php" class="d-block"><h5><?=Session::get('name')?></h5></a>
+                <a href="../index.php" class="d-block"><h5><?=Session::get('name')?></h5></a>
             </div>
         </div>
 
@@ -33,6 +33,12 @@
                     <a href="../pos/index.php" class="nav-link">
                         <i class="fa fa-shopping-cart nav-icon"></i>
                         <p>Pos</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="../report.php" class="nav-link">
+                        <i class="fa fa-shopping-cart nav-icon"></i>
+                        <p>Report</p>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -220,7 +226,7 @@
                         <li class="nav-item">
                             <a href="../product/allProduct.php" class="nav-link">
                                 <i class="fab fa-product-hunt nav-icon"></i>
-                                <p>All Product</p>
+                                <p>Manage Product</p>
                             </a>
                         </li>
                     </ul>
@@ -259,6 +265,35 @@
                             </a>
                         </li>
 
+                    </ul>
+                </li>
+                <li class="nav-item ">
+                    <a href="#" class="nav-link  ">
+                        <i class="nav-icon fas fa-money-bill-alt"></i>
+                        <p>
+                            Sales Report
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="../sales_report/monthlyReport.php" class="nav-link">
+                                <i class="far fa-money-bill-alt nav-icon"></i>
+                                <p>monthly Sales Report</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../sales_report/report.php" class="nav-link">
+                                <i class="far fa-money-bill-alt nav-icon"></i>
+                                <p>Today Sales Report</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../sales_report/yearlyReport.php" class="nav-link">
+                                <i class="far fa-money-bill-alt nav-icon"></i>
+                                <p>yearly Sales Report</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item ">

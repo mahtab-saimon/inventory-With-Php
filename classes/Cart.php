@@ -77,6 +77,16 @@ class Cart
         return $result;
     }
 
+    public function ord()
+    {
+        $query = "select *
+                       from 
+                    carts
+                              ";
+        $result = $this->db->select($query);
+        return $result;
+
+    }
     public function getInvoice($cus_Id)
     {
         /*
@@ -162,21 +172,33 @@ class Cart
     }
 
 
-    public function delCustomerCart(){
-        $sQuery = "select * from orders ";
-        $result = $this->db->select($sQuery)->fetch_assoc();
-        $customer_Id = $result['customer_Id'];
-
+    public function delCustomerCart($customer_Id){
+       
         $query = "delete from carts where customer_Id ='$customer_Id'";
-        $result=$this->db->select($query);
+        $result=$this->db->delete($query);
         return $result;
     }
 
 
-    public function orderProduct($data){
+    public function orderProduct($data)
+    {
+        $price = "select sum(quantity) as qty from carts group by customer_Id";
+        $resultCarts = $this->db->select($price)->fetch_assoc();
+        $totalProducts = $resultCarts['qty'];
+        // print_r($totalProducts);
+
+        /*  die();
+          print_r(count($totalProducts));
+          die();*/
 
         $customer_Id = $this->fm->validation($data['customer_Id']);
         $customer_Id = mysqli_real_escape_string($this->db->link, $customer_Id);
+
+        $month = $this->fm->validation($data['month']);
+        $month = mysqli_real_escape_string($this->db->link, $month);
+
+        $year = $this->fm->validation($data['year']);
+        $year = mysqli_real_escape_string($this->db->link, $year);
 
         $orderDate = $this->fm->validation($data['orderDate']);
         $orderDate = mysqli_real_escape_string($this->db->link, $orderDate);
@@ -184,7 +206,7 @@ class Cart
         $orderStatus = $this->fm->validation($data['orderStatus']);
         $orderStatus = mysqli_real_escape_string($this->db->link, $orderStatus);
 
-        $totalProducts = $this->fm->validation($data['totalProducts']);
+        $totalProducts = $this->fm->validation($totalProducts);
         $totalProducts = mysqli_real_escape_string($this->db->link, $totalProducts);
 
         $subTotal = $this->fm->validation($data['subTotal']);
@@ -207,47 +229,68 @@ class Cart
 
         $due = $this->fm->validation($data['due']);
         $due = mysqli_real_escape_string($this->db->link, $due);
+        $query = "INSERT INTO orders (customer_Id, orderDate, month, year, orderStatus, totalProducts,subTotal, vat, shipping ,total,paymentStatus, pay ,due )
+         VALUES('$customer_Id', '$orderDate', '$month', '$year', '$orderStatus', '$totalProducts', '$subTotal', '$vat', '$shipping','$total', '$paymentStatus', '$pay', '$due')";
 
-        $query = "INSERT INTO orders (customer_Id, orderDate, orderStatus, totalProducts,subTotal, vat, shipping ,total,paymentStatus, pay ,due )
-         VALUES('$customer_Id', '$orderDate', '$orderStatus', '$totalProducts', '$subTotal', '$vat', '$shipping','$total', '$paymentStatus', '$pay', '$due')";
-        $inserted_rows = $this->db->insert($query);
+        $inserted_order = $this->db->insert($query);
+        if ($inserted_order) {
 
-        $price = "select product_Id, price from carts ";
-        $resultCarts = $this->db->select($price)->fetch_assoc();
-        $price= $resultCarts['price'];
-        $product_Id= $resultCarts['product_Id'];
+            /*$price = "select product_Id, price from carts ";
+            $resultCarts = $this->db->select($price)->fetch_assoc();
+            $price = $resultCarts['price'];
+            $product_Id = $resultCarts['product_Id'];
 
-        $sQuery = "select * from orders ";
-        $resultOrder = $this->db->select($sQuery)->fetch_assoc();
-        $order_Id = $resultOrder['id'];
-        $quantity = $resultOrder['totalProducts'];
-        $total = $resultOrder['total'];
+            $sQuery = "select * from orders ";
+            $resultOrder = $this->db->select($sQuery)->fetch_assoc();
+            $order_Id = $resultOrder['id'];
+            $quantity = $resultOrder['totalProducts'];
 
-        $order_Id = $this->fm->validation($order_Id);
-        $order_Id = mysqli_real_escape_string($this->db->link, $order_Id);
+            $order_Id = $this->fm->validation($order_Id);
+            $order_Id = mysqli_real_escape_string($this->db->link, $order_Id);
 
-        $product_Id= $this->fm->validation($product_Id);
-        $product_Id = mysqli_real_escape_string($this->db->link, $product_Id);
+            $product_Id = $this->fm->validation($product_Id);
+            $product_Id = mysqli_real_escape_string($this->db->link, $product_Id);
 
-        $quantity = $this->fm->validation($quantity);
-        $quantity = mysqli_real_escape_string($this->db->link, $quantity);
+            $quantity = $this->fm->validation($quantity);
+            $quantity = mysqli_real_escape_string($this->db->link, $quantity);
 
-        $total = $this->fm->validation($total);
-        $total = mysqli_real_escape_string($this->db->link, $total);
+            $total = $this->fm->validation($total);
+            $total = mysqli_real_escape_string($this->db->link, $total);*/
 
-        $order = "INSERT INTO orderdetails (order_Id, product_Id, quantity, price, total ) 
-         VALUES('$order_Id', '$product_Id', '$quantity', '$price', '$total')";
+           /* $order = "INSERT INTO orderdetails (order_Id, product_Id, quantity, price, total )
+         VALUES('$order_Id', '$product_Id', '$quantity', '$price', '$total')";*/
 
-        $inserted_row = $this->db->insert($order);
-        if ($inserted_row){
-            delCustomerCart;
-            header("location:order/pendingOrder.php");
-        }
-        else {
-            header("location:404.php");
+            $order = "INSERT INTO orderdetails(order_Id, product_Id, quantity, price, total) 
+                  SELECT orders.id,product_Id,quantity, price,(price * quantity) 
+                  FROM carts, orders where orders.customer_Id = carts.customer_Id
+                ";
+
+            $inserted_row = $this->db->insert($order);
+            if ($inserted_row) {
+                $price = "select * from carts customer_Id";
+                $resultCarts = $this->db->select($price)->fetch_assoc();
+
+                $sQuery = "select * from products,carts where products.id = carts.product_Id";
+                $result =$this->db->select($sQuery)->fetch_assoc();
+                $available_quantity = $result['stock_quantity'];
+                $quantity = $result['quantity'];
+                $product_Id = $result['product_Id'];
+                $p_query = "update products
+                                 set
+                             stock_quantity=('$available_quantity'-'$quantity')
+                      
+                        where id = '$product_Id' ";
+                $success = $this->db->update($p_query);
+
+                header("location:order/pendingOrder.php");
+            } else {
+                header("location:404.php");
+            }
+        }else{
+            $_SESSION['status'] = "Something went wrong";
+            $_SESSION['status_code'] = "error";
         }
     }
-
     public function getViewOrderProduct($id)
     {
         $query = "SELECT O.*, O.id as O_id, C.* from orders  as O
@@ -295,7 +338,7 @@ class Cart
 
     public function getOrderProduct(){
 
-        $query = "select *,orders.id as o_Id from orders,customers where orders.customer_Id =  customers.id";
+        $query = "select *,orders.id as o_Id from orders,customers where orders.customer_Id =  customers.id order by o_Id desc";
         $result=$this->db->select($query);
         return $result;
     }

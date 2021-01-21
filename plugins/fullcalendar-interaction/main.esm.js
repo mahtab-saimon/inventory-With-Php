@@ -1201,7 +1201,7 @@ var DateSelecting = /** @class */ (function (_super) {
         };
         _this.handlePointerUp = function (pev) {
             if (_this.dragSelection) {
-                // selection is already rendered, so just need to report selection
+                // selection is already rendered, so just need to sales_report selection
                 _this.component.context.calendar.triggerDateSelect(_this.dragSelection, pev);
                 _this.dragSelection = null;
             }

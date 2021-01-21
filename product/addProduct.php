@@ -50,6 +50,7 @@ include_once "../inc/sidebar.php";
                         <h1>Product Form</h1>
                     </div>
                     <div class="col-sm-6">
+                        <a href="allProduct.php" class="btn btn-outline-info ">Manage Product</a>
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
                             <li class="breadcrumb-item active">Add Product</li>
@@ -133,70 +134,74 @@ include_once "../inc/sidebar.php";
                                     </div>
                                     </div>
                                     <div class="row">
-                                    <div class="form-group col-md-6">
-                                        <label for="Size">Size</label>
-                                        <select id="Size" name="size_Id" class="form-control">
-                                            <option>Select Size</option>
+                                        <div class="form-group col-md-4">
+                                            <label for="Size">Size</label>
+                                            <select id="Size" name="size_Id" class="form-control">
+                                                <option>Select Size</option>
 
-                                            <?php
-                                            $Size = new Size();
-                                            $getSize = $Size->getAllSize();
-                                            if ($getSize){
-                                                while ($result=$getSize->fetch_assoc()){
-                                                    ?>
-                                                    <option value="<?=$result['id']?>"><?=$result['sizeName']?></option>
-                                                <?php }
-                                            } ?>
-
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="Color">Color</label>
-                                        <select class="form-control" name="color_Id" id=Color"">
-                                            <option>Select Color</option>
-                                            <?php
-                                            $color = new Color();
-                                            $getColor = $color->getAllColor();
-                                             if ($getColor){
-                                                while ($result=$getColor->fetch_assoc()){
-                                                    ?>
-                                                    <option
-                                                            value="<?=$result['id']?>"><?=$result['color']?>
-                                                    </option>
+                                                <?php
+                                                $Size = new Size();
+                                                $getSize = $Size->getAllSize();
+                                                if ($getSize){
+                                                    while ($result=$getSize->fetch_assoc()){
+                                                        ?>
+                                                        <option value="<?=$result['id']?>"><?=$result['sizeName']?></option>
                                                     <?php }
-                                             } ?>
-                                        </select>
-                                    </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="productCode">productCode</label>
-                                        <input id="productCode" class="form-control" name="productCode" type="text">
-                                    </div>
-                                     <div class="form-group">
-                                        <label for="productPlce">productPlce</label>
-                                        <input id="productPlce" class="form-control" name="productPlce" type="text">
-                                    </div>
-                                     <div class="form-group">
-                                        <label for="productRoute">productRoute</label>
-                                        <input id="productRoute" class="form-control" name="productRoute" type="text">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="buyDate">buyDate</label>
-                                        <input id="buyDate" class="form-control" name="buyDate" type="date">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="expireDate">expireDate</label>
-                                        <input id="expireDate" class="form-control" name="expireDate" type="date">
-                                    </div>
+                                                } ?>
 
-                                    <div class="form-group">
-                                        <label for="buyingPrice">buyingPrice</label>
-                                        <input id="buyingPrice" class="form-control" name="buyingPrice" type="text">
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="Color">Color</label>
+                                            <select class="form-control" name="color_Id" id=Color"">
+                                                <option>Select Color</option>
+                                                <?php
+                                                $color = new Color();
+                                                $getColor = $color->getAllColor();
+                                                 if ($getColor){
+                                                    while ($result=$getColor->fetch_assoc()){
+                                                        ?>
+                                                        <option
+                                                                value="<?=$result['id']?>"><?=$result['color']?>
+                                                        </option>
+                                                        <?php }
+                                                 } ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col">
+                                            <label for="productCode">productCode</label>
+                                            <input id="productCode" class="form-control" name="productCode" type="text">
+                                        </div>
                                     </div>
+                                    <div class="row">
+                                         <div class="col form-group">
+                                            <label for="productRoute">productRoute</label>
+                                            <input id="productRoute" class="form-control" name="productRoute" type="text">
+                                        </div>
+                                        <div class="col form-group">
+                                            <label for="buyDate">buyDate</label>
+                                            <input id="buyDate" class="form-control" name="buyDate" type="date">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col form-group">
+                                            <label for="expireDate">expireDate</label>
+                                            <input id="expireDate" class="form-control" name="expireDate" type="date">
+                                        </div>
 
-                                    <div class="form-group">
-                                        <label for="sellingPrice">sellingPrice</label>
-                                        <input id="sellingPrice" class="form-control" name="sellingPrice" type="text">
+                                        <div class="col form-group">
+                                            <label for="buyingPrice">buyingPrice</label>
+                                            <input id="buyingPrice" class="form-control" name="buyingPrice" type="text">
+                                        </div>
+
+                                        <div class="col form-group">
+                                            <label for="sellingPrice">sellingPrice</label>
+                                            <input id="sellingPrice" class="form-control" name="sellingPrice" type="text">
+                                        </div>
+                                        <div class="col form-group">
+                                            <label for="Quantity">Product Quantity</label>
+                                            <input id="Quantity" class="form-control" name="stock_quantity" type="text">
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="">productDescription</label>

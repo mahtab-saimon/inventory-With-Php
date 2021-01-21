@@ -62,6 +62,7 @@ if (isset($_REQUEST['in_ctive_id'])){
                         <h1>Suplier</h1>
                     </div>
                     <div class="col-sm-6">
+                        <a href="addSuplier.php" class="btn btn-outline-info ">Add Suplier</a>
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
                             <li class="breadcrumb-item active">All Suplier</li>
@@ -89,7 +90,7 @@ if (isset($_REQUEST['in_ctive_id'])){
                                         <th>Name</th>
                                         <th>Phone</th>
                                         <th>Address</th>
-                                        <th>account Holder</th>
+                                        <th>Account</th>
                                         <th>status</th>
                                         <th>image</th>
                                         <th>Actions</th>
@@ -108,7 +109,7 @@ if (isset($_REQUEST['in_ctive_id'])){
                                                 <td><?= $result['firstname']; ?> <?= $result['lastname'];?></td>
                                                 <td><?= $result['phone']; ?></td>
                                                 <td><?= $result['address']; ?></td>
-                                                <td><?= $result['accountHolder']; ?></td>
+                                                <td><?= $result['accountNumber']; ?></td>
                                                 <td>
                                                     <?php
                                                     if($result['status'] == '1'){
@@ -174,7 +175,7 @@ if (isset($_REQUEST['in_ctive_id'])){
                                         <th>Name</th>
                                         <th>Phone</th>
                                         <th>Address</th>
-                                        <th>account Holder</th>
+                                        <th>Account</th>
                                         <th>status</th>
                                         <th>image</th>
                                         <th>Actions</th>

@@ -65,6 +65,12 @@ class Expence
         $result = $this->db->select($query);
         return $result;
     }
+    public function report(){
+        $date =date("d/m/y");
+        $query = "select * from orders,customers where orders.customer_Id = customers.id and orderDate='$date' order by orders.id desc";
+        $result = $this->db->select($query);
+        return $result;
+    }
     public function getTodayTOtalExpence(){
         $date =date("d/m/y");
         $query = "SELECT SUM(amount) AS sum FROM  expenses WHERE date = '$date' ";

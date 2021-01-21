@@ -59,7 +59,22 @@ if (isset($_POST['submit'])){
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1> Order Status : <b><?= $result['orderStatus'] ?> </b></h1>
+
+                        <h1> Order Status :
+                            <b>
+                                <?php
+                                if($result['orderStatus'] == 'pending'){
+                                    ?>
+                                    <span class="badge badge-danger">Pending</span>
+                                    <?php
+                                } else {
+                                    ?>
+                                    <span class="badge badge-success">Success</span>
+                                    <?php
+                                }
+                                ?>
+                            </b>
+                        </h1>
 
                     </div>
                     <div class="col-sm-6">
@@ -100,9 +115,8 @@ if (isset($_POST['submit'])){
                                 <div class="col-sm-4 invoice-col">
                                     To
                                     <address>
-                                        <strong><?= $result['firstname'] ?> <?= $result['lastname'] ?></strong><br>
+                                        <strong><?= $result['firstname'] ?></strong><br>
                                         <?= $result['address'] ?><br>
-                                        <?= $result['city'] ?><br>
                                         Phone: <?= $result['phone'] ?><br>
                                         Email: <?= $result['email'] ?>
                                     </address>
@@ -112,7 +126,8 @@ if (isset($_POST['submit'])){
                                     <br>
                                     <b>Order ID:</b> <?= $result['customer_Id'] ?><br>
                                     <b>Payment Due:</b> <?= date('d/m/Y') ?><br>
-                                    <b>Account:</b> <?= $result['accountNumber'] ?>
+                                    <b>Payment:</b> <?= $result['paymentStatus'] ?><br>
+                                    <b>Pay:</b> <?= $result['pay'] ?><br>
                                 </div>
                             </div>
                             <?php
@@ -178,7 +193,7 @@ if (isset($_POST['submit'])){
                                             <table class="table">
                                                 <tr>
                                                     <th style="width:50%">Subtotal:</th>
-                                                    <td><?= $result['subTotal'] ?></td>
+                                                    <td><?= $result['subTotal']?></td>
                                                 </tr>
                                                 <tr>
                                                     <th>Tax (10%)</th>
@@ -194,7 +209,7 @@ if (isset($_POST['submit'])){
                                                 </tr>
                                                 <tr>
                                                     <th>Total:</th>
-                                                    <td> <?= $result['total'] ?></td>
+                                                    <td> <?= $result['pay'] ?></td>
                                                 </tr>
                                             </table>
                                             <?php

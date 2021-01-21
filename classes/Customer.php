@@ -19,13 +19,10 @@ class Customer
     }
 
 
-    public function customerInsert($data, $file)
+    public function customerInsert($data)
     {
         $firstname = $this->fm->validation($data['firstname']);
         $firstname = mysqli_real_escape_string($this->db->link, $firstname);
-
-        $lastname = $this->fm->validation($data['lastname']);
-        $lastname = mysqli_real_escape_string($this->db->link, $lastname);
 
         $email = $this->fm->validation($data['email']);
         $email = mysqli_real_escape_string($this->db->link, $email);
@@ -36,47 +33,21 @@ class Customer
         $address = $this->fm->validation($data['address']);
         $address = mysqli_real_escape_string($this->db->link, $address);
 
-        $accountHolder = $this->fm->validation($data['accountHolder']);
-        $accountHolder= mysqli_real_escape_string($this->db->link, $accountHolder);
 
-        $accountNumber = $this->fm->validation($data['accountNumber']);
-        $accountNumber = mysqli_real_escape_string($this->db->link,$accountNumber);
-
-        $bankName = $this->fm->validation($data['bankName']);
-        $bankName= mysqli_real_escape_string($this->db->link, $bankName);
-
-        $bankBranch = $this->fm->validation($data['bankBranch']);
-        $bankBranch = mysqli_real_escape_string($this->db->link,$bankBranch);
-
-        $city = $this->fm->validation($data['city']);
-        $city = mysqli_real_escape_string($this->db->link, $city);
-
-        $permited = array('jpg', 'jpeg', 'png', 'gif');
-        $file_name = $file['image']['name'];
-        $file_size = $file['image']['size'];
-        $file_temp = $file['image']['tmp_name'];
-
-        $div = explode('.', $file_name);
-        $file_ext = strtolower(end($div));
-        $unique_image = substr(md5(time()), 0, 10) . '.' . $file_ext;
-        $uploaded_image = "../img/customer/" . $unique_image;
-
-        if ($firstname == "" || $lastname == "" || $email == "" || $phone == "" || $address == ""|| $accountHolder == "" || $accountNumber == ""|| $bankName == ""|| $bankBranch == ""|| $city == ""){
+        if ($firstname == "" || $email == "" || $phone == "" || $address == ""){
             $_SESSION['status'] = "Field Must Not be epmty";
             $_SESSION['status_code'] = "error";
         }
-        $mailQuery = "select * from customers where email = '$email' limit 1";
-        $mailCheck = $this->db->select($mailQuery);
-        if ($mailCheck !=false){
-
-            $msg="<span style='color:red; font_size:18px;'>Email Already Exist ..</span>";
-            return $msg;
+        $phoneQuery = "select * from customers where phone = '$phone' limit 1";
+        $phoneCheck = $this->db->select($phoneQuery);
+        if ($phoneCheck !=false){
+            $_SESSION['status'] = "phone Number Already Exist";
+            $_SESSION['status_code'] = "error";
         }else{
-            move_uploaded_file($file_temp, $uploaded_image);
             $query = "INSERT INTO 
-                        customers(firstname , lastname,email,phone,address, image ,accountHolder , accountNumber, bankName, bankBranch, city) 
+                        customers(firstname ,email,phone,address) 
                         VALUES
-                        ('$firstname', '$lastname', '$email', '$phone', '$address', '$uploaded_image', '$accountHolder', '$accountNumber', '$bankName','$bankBranch', '$city' )";
+                        ('$firstname', '$email', '$phone', '$address' )";
             $inserted_rows = $this->db->insert($query);
             if ($inserted_rows) {
                 $_SESSION['status'] = "Data Inserted SuccessFully";
@@ -134,9 +105,6 @@ class Customer
         $firstname = $this->fm->validation($data['firstname']);
         $firstname = mysqli_real_escape_string($this->db->link, $firstname);
 
-        $lastname = $this->fm->validation($data['lastname']);
-        $lastname = mysqli_real_escape_string($this->db->link, $lastname);
-
         $email = $this->fm->validation($data['email']);
         $email = mysqli_real_escape_string($this->db->link, $email);
 
@@ -146,78 +114,18 @@ class Customer
         $address = $this->fm->validation($data['address']);
         $address = mysqli_real_escape_string($this->db->link, $address);
 
-        $accountHolder = $this->fm->validation($data['accountHolder']);
-        $accountHolder = mysqli_real_escape_string($this->db->link, $accountHolder);
 
-        $accountNumber = $this->fm->validation($data['accountNumber']);
-        $accountNumber = mysqli_real_escape_string($this->db->link, $accountNumber);
-
-        $bankName = $this->fm->validation($data['bankName']);
-        $bankName = mysqli_real_escape_string($this->db->link, $bankName);
-
-        $bankBranch = $this->fm->validation($data['bankBranch']);
-        $bankBranch = mysqli_real_escape_string($this->db->link, $bankBranch);
-
-        $city = $this->fm->validation($data['city']);
-        $city = mysqli_real_escape_string($this->db->link, $city);
-
-        $permited = array('jpg', 'jpeg', 'png', 'gif');
-        $file_name = $file['image']['name'];
-        $file_size = $file['image']['size'];
-        $file_temp = $file['image']['tmp_name'];
-
-        $div = explode('.', $file_name);
-        $file_ext = strtolower(end($div));
-        $unique_image = substr(md5(time()), 0, 10) . '.' . $file_ext;
-        $uploaded_image = "../img/customer/" . $unique_image;
-
-        if ($firstname == "" || $lastname == "" || $email == "" || $phone == "" || $address == "" || $accountHolder == "" || $accountNumber == "" || $bankName == "" || $bankBranch == "" || $city == "") {
+        if ($firstname == ""  || $email == "" || $phone == "" || $address == "" ) {
             $_SESSION['status'] = "Field Must Not be epmty";
             $_SESSION['status_code'] = "error";
-        } else {
-            if (!empty($file_name)) {
-                if ($file_size > 1048567) {
-                    $_SESSION['status'] = "Image size should be less 1MB.";
-                    $_SESSION['status_code'] = "error";
-                } else {
-                    move_uploaded_file($file_temp, $uploaded_image);
-
-                    $query = "update customers set
-                            firstname = '$firstname',
-                            lastname = '$lastname',
-                            email = '$email',
-                            phone = '$phone',
-                            address = '$address',
-                             image = '$uploaded_image',
-                            accountHolder = '$accountHolder',
-                            accountNumber = '$accountNumber',
-                            bankName = '$bankName',
-                            bankBranch = '$bankBranch',
-                            city = '$city'
-                            where id= '$id'";
-
-                    $updated_rows = $this->db->update($query);
-                    if ($updated_rows) {
-                        $_SESSION['status'] = "Data Updated With Image";
-                        $_SESSION['status_code'] = "success";
-
-                    } else {
-                        $_SESSION['status'] = "Data Not Updated     ";
-                        $_SESSION['status_code'] = "error";
-                    }
-                }
-            } else {
+        } else
+            {
                 $query = "update customers set
                              firstname = '$firstname',
-                            lastname = '$lastname',
+                          
                             email = '$email',
                             phone = '$phone',
                             address = '$address',
-                            accountHolder = '$accountHolder',
-                            accountNumber = '$accountNumber',
-                            bankName = '$bankName',
-                            bankBranch = '$bankBranch',
-                            city = '$city'
                             where id= '$id'";
 
                 $updated_rows = $this->db->update($query);
@@ -231,7 +139,6 @@ class Customer
                 }
             }
         }
-    }
 
 
 }

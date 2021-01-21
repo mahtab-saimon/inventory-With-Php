@@ -18,8 +18,7 @@ else{
 
 if (isset($_POST['submit'])){
     $orderInsert = $ct->orderProduct($_POST);
-    $delData = $ct->delCustomerCart();
-
+    $delData = $ct->delCustomerCart($id);
 }
 
 ?>
@@ -110,9 +109,8 @@ if (isset($_POST['submit'])){
                                     <div class="col-sm-4 invoice-col">
                                         To
                                         <address>
-                                            <strong><?= $row['firstname'] ?> <?= $row['lastname'] ?></strong><br>
+                                            <strong><?= $row['firstname'] ?></strong><br>
                                             <?= $row['address'] ?><br>
-                                            <?= $row['city'] ?><br>
                                             Phone: <?= $row['phone'] ?><br>
                                             Email: <?= $row['email'] ?>
                                         </address>
@@ -122,7 +120,6 @@ if (isset($_POST['submit'])){
                                         <br>
                                         <b>Order ID:</b> <?= $row['customer_Id'] ?><br>
                                         <b>Payment Due:</b> <?= date('d/m/Y') ?><br>
-                                        <b>Account:</b> <?= $row['accountNumber'] ?>
                                     </div>
 
                                 <!-- /.col -->
@@ -152,6 +149,7 @@ if (isset($_POST['submit'])){
                                             $i = 0;
                                             $sum = 0;
                                             $subTotal = 0;
+                                            $lineTotal = 0;
                                             $quantity = 0;
                                             while ($result = $getPd->fetch_assoc()){
                                                 /*echo "<pre>";
@@ -173,67 +171,19 @@ if (isset($_POST['submit'])){
                                                 <td><?= $result['price'] ?></td>
                                                 <td>
                                                     <?php
-
-                                                    $subTotal = $result['price'] * $result['quantity'];
-                                                    echo $subTotal;
+                                                    $lineTotal = $result['price'] * $result['quantity'];
+                                                    echo $lineTotal;
                                                     // print_r(Session::set("total",$total));
                                                     $quantity=$quantity+$result['quantity'];
-                                                    $sum=$sum + $subTotal;
-                                                    // print_r($sum);
-                                                    Session::set("sum",$sum);
+                                                    $subTotal=$subTotal + $lineTotal;
+                                                    Session::set("subTotal",$subTotal);
                                                     Session::set("quantity",$quantity);
-                                                    $vat = $sum * 0.10;
-                                                    $Shipping = $sum * 0.05;
-                                                    $total = ($Shipping + $sum + $vat);
+                                                    $vat = $subTotal * 0.10;
+                                                    $Shipping = $subTotal * 0.05;
+                                                    $total = ($Shipping + $subTotal + $vat);
                                                     ?>
                                                 </td>
                                             </tr>
-                                                <form action="" method="post" enctype="multipart/form-data" >
-                                                    <div class="modal fade" id="payment">
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <div class="form-group">
-                                                                        <label  for="typeahead">Payment </label>
-                                                                        <div class="">
-                                                                            <select name="paymentStatus" class="form-control" id="">
-                                                                                <option value="HandCash">HandCash</option>
-                                                                                <option value="Check">Check</option>
-                                                                                <option value="Due">Due</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label for="typeahead">Pay </label>
-                                                                        <input type="text" name="pay" class="form-control"
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label for="due">Due </label>
-                                                                        <input type="text" id="due" name="due" class="form-control"
-                                                                    </div>
-                                                                    <input type="hidden" name="customer_Id" value="<?=$result['customer_Id']?>">
-                                                                    <input type="hidden" name="orderDate" value="<?=date('d/m/y')?>">
-                                                                    <input type="hidden" name="orderStatus" value="pending">
-                                                                    <input type="hidden" name="totalProducts" value="<?=$result['quantity']?>">
-                                                                    <input type="hidden" name="subTotal" value="<?= $subTotal ?>">
-                                                                    <input type="hidden" name="vat" value="<?= $vat ?>">
-                                                                    <input type="hidden" name="shipping" value="<?= $Shipping ?>">
-                                                                    <input type="hidden" name="total" value="<?=$total ?>">
-                                                                    <input type="hidden" name="product_Id" value="<?=$result['product_Id']?>">
-                                                                </div>
-                                                                <div class="modal-footer justify-content-between">
-                                                                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
-                                                                    <button type="submit" name="submit" class="btn btn-outline-dark">Save changes</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
                                             <?php
                                                 //(Session::set("pending",$pending));
                                                 $_SESSION['pending'] = 'pending';
@@ -241,7 +191,84 @@ if (isset($_POST['submit'])){
                                         }
                                         ?>
                                         </tbody>
+                                        <?php
+                                            $getOrd = $ct->ord();
+                                            if ($getOrd) {
+                                            while ($result = $getOrd->fetch_assoc()) {
+                                                ?>
+                                                <form action="" method="post" enctype="multipart/form-data">
+                                                    <div class="modal fade" id="payment">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close"
+                                                                            data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="form-group">
+                                                                        <label for="typeahead">Payment </label>
+                                                                        <div class="">
+                                                                            <select name="paymentStatus"
+                                                                                    class="form-control" id="">
+                                                                                <option value="HandCash">HandCash
+                                                                                </option>
+                                                                                <option value="Check">Check</option>
+                                                                                <option value="Due">Due</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="typeahead">Pay </label>
+                                                                        <input type="text" name="pay" value="<?=$total?>"
+                                                                               class="form-control"
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="due">Due </label>
+                                                                        <input type="text" id="due" name="due" value="<?=00?>"
+                                                                               class="form-control"
+                                                                    </div>
+                                                                    <input type="hidden" name="customer_Id"
+                                                                           value="<?= $result['customer_Id'] ?>">
+                                                                    <input type="hidden" name="orderDate"
+                                                                           value="<?= date('d/m/y') ?>">
+                                                                    <input type="hidden" name="orderStatus" value="pending">
+                                                                    <input type="hidden" name="month" value="<?=date('F')?>">
+                                                                    <input type="hidden" name="year" value="<?=date('Y')?>">
 
+                                                                    <!--                                                                    <input type="hidden" name="totalProducts" value="-->
+                                                                    <?//=$result['quantity']
+                                                                    ?><!--">-->
+                                                                    <input type="hidden" name="subTotal"
+                                                                           value="<?= $subTotal ?>">
+                                                                    <input type="hidden" name="vat" value="<?= $vat ?>">
+                                                                    <input type="hidden" name="shipping"
+                                                                           value="<?= $Shipping ?>">
+                                                                    <input type="hidden" name="total"
+                                                                           value="<?= $total ?>">
+                                                                    <input type="hidden" name="product_Id"
+                                                                           value="<?= $result['product_Id'] ?>">
+<!--                                                                    --><?php
+//                                                                    print_r($results['product_Id'])
+//                                                                    ?>
+                                                                </div>
+                                                                <div class="modal-footer justify-content-between">
+                                                                    <button type="button" class="btn btn-outline-dark"
+                                                                            data-dismiss="modal">Close
+                                                                    </button>
+                                                                    <button type="submit" name="submit"
+                                                                            class="btn btn-outline-dark">Save changes
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                <?php
+                                            }
+                                            }
+                                        ?>
                                     </table>
                                 </div>
                                 <!-- /.col -->
@@ -269,7 +296,7 @@ if (isset($_POST['submit'])){
                                             <table class="table">
                                                 <tr>
                                                     <th style="width:50%">Subtotal:</th>
-                                                    <td><?= $sum ?></td>
+                                                    <td><?= $subTotal ?></td>
                                                 </tr>
                                                 <tr>
                                                     <th>Tax (10%)</th>
